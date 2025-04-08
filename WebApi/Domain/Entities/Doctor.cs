@@ -6,7 +6,7 @@ namespace WebApi.Domain.Entities
     public class Doctor : IEntity<int>
     {
         public int Id { get; set; }
-        public required string Name { get; set; }
+        public required string FullName { get; set; }
         public required string Speciality { get; set; }
         public required string SummaryInfo { get; set; }
         public required string Biography { get; set; }
@@ -16,5 +16,7 @@ namespace WebApi.Domain.Entities
 
         public Address Address { get; set; } = default!;
         public ICollection<PersonalLink> PersonalLinks { get; set; } = [];
+        public ICollection<Appointment> Appointments { get; set; } = [];
+        public ICollection<Review> Reviews { get; set; } = [];
     }
 }

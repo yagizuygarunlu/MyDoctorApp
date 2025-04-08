@@ -8,5 +8,7 @@ namespace WebApi.Domain.Entities
         public required string FullName { get; set; }
         public required string PhoneNumber { get; set; }
         public required string Email { get; set; }
+
+        public ICollection<Appointment> Appointments { get; set; } = [];
     }
 }
