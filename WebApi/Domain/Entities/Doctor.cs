@@ -13,6 +13,7 @@ namespace WebApi.Domain.Entities
         public required string Email { get; set; }
         public required string PhoneNumber { get; set; }
         public required string ImageUrl { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public Address Address { get; set; } = default!;
         public ICollection<PersonalLink> PersonalLinks { get; set; } = [];

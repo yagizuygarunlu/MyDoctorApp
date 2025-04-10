@@ -7,7 +7,7 @@ namespace WebApi.Domain.Entities
         public Guid Id { get; set; }
         public int DoctorId { get; set; }
         public Guid PatientId { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public string? Description { get; set; }
         public bool IsCancelled { get; set; }
         public Doctor Doctor { get; set; } = default!;
