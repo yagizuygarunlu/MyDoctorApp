@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using WebApi.Features.Doctors.Commands.Create;
 using WebApi.Features.Doctors.Commands.Delete;
+using WebApi.Features.Doctors.Commands.Reactivate;
 using WebApi.Features.Doctors.Commands.Update;
 
 namespace WebApi.Features.Doctors
@@ -15,10 +16,7 @@ namespace WebApi.Features.Doctors
             {
                 var result = await mediator.Send(command);
                 return Results.Created($"/api/doctors/{result.Data}", result.Data);
-            })
-            .WithName("CreateDoctor")
-            .Produces<int>(StatusCodes.Status201Created)
-            .Produces(StatusCodes.Status400BadRequest);
+            });
 
             group.MapPut("/{id:int}", async (int id, UpdateDoctorCommand command, IMediator mediator) =>
             {
@@ -28,20 +26,19 @@ namespace WebApi.Features.Doctors
                 }
                 var result = await mediator.Send(command);
                 return Results.Ok(result);
-            })
-            .WithName("UpdateDoctor")
-            .Produces<int>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status404NotFound);
+            });
 
             group.MapDelete("/{id:int}", async (int id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new DeleteDoctorCommand(id));
                 return result;
-            })
-            .WithName("DeleteDoctor")
-            .Produces<int>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
+            });
+
+            group.MapPut("/{id:int}/reactivate", async (int id, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new ReactivateDoctorCommand(id));
+                return result;
+            });
         }
     }
 }
