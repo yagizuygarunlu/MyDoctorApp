@@ -27,5 +27,6 @@ namespace WebApi.Infrastructure.Persistence
         public DbSet<Review> Reviews { get; set; }
         public DbSet<TreatmentImage> TreatmentImages { get; set; }
         public DbSet<TreatmentFaq> TreatmentFaqs { get; set; }
+        public DbSet<User> Users { get; set; } = default!;
     }
 }

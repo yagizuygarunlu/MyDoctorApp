@@ -11,6 +11,7 @@ namespace WebApi.Infrastructure.EntityConfigurations
             builder.HasKey(a => a.Id);
             builder.Property(a => a.Date).IsRequired();
             builder.Property(a => a.Description).HasMaxLength(500);
+            builder.Property(a => a.RejectionReason).HasMaxLength(500);
             builder.HasOne(a => a.Doctor)
                 .WithMany(d => d.Appointments)
                 .HasForeignKey(a => a.DoctorId)
