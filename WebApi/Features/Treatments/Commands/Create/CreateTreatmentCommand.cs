@@ -9,7 +9,8 @@ namespace WebApi.Features.Treatments.Commands.Create
     public record CreateTreatmentCommand(
         string Name,
         string? Description,
-        string? Slug
+        string? Slug,
+        List<TreatmentImage>? Images = null
     ) : IRequest<Result<int>>;
 
     public class CreateTreatmentCommandValidator : AbstractValidator<CreateTreatmentCommand>
@@ -39,7 +40,20 @@ namespace WebApi.Features.Treatments.Commands.Create
             };
             _context.Treatments.Add(treatment);
             await _context.SaveChangesAsync(cancellationToken);
+            await AddTreatmentImagesAsync(request.Images, cancellationToken);
             return Result<int>.Success(treatment.Id);
+        }
+
+        public async Task<Unit> AddTreatmentImagesAsync(
+            List<TreatmentImage> images,
+            CancellationToken cancellationToken)
+        {
+            if (images == null || images.Count == 0)
+                return Unit.Value;
+
+            _context.TreatmentImages.AddRange(images);
+            await _context.SaveChangesAsync(cancellationToken);
+            return Unit.Value;
         }
     }
 }

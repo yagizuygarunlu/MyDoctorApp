@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Common.Results;
+using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.Treatments.Commands.Update
@@ -9,7 +11,8 @@ namespace WebApi.Features.Treatments.Commands.Update
         int Id,
         string Name,
         string? Description,
-        string? Slug
+        string? Slug,
+        List<TreatmentImage>? Images = null
     ) : IRequest<Result<int>>;
 
     public class UpdateTreatmentCommandValidator : AbstractValidator<UpdateTreatmentCommand>
@@ -40,7 +43,25 @@ namespace WebApi.Features.Treatments.Commands.Update
             treatment.Description = request.Description;
             treatment.Slug = request.Slug;
             await _context.SaveChangesAsync(cancellationToken);
+            await UpdateTreatmentImagesAsync(request.Id, request.Images, cancellationToken);
             return Result<int>.Success(treatment.Id);
+        }
+
+        public async Task<Unit> UpdateTreatmentImagesAsync(
+            int treatmentId,
+            List<TreatmentImage> images,
+            CancellationToken cancellationToken)
+        {
+                var treatmentImages = await _context.TreatmentImages
+                    .AsNoTracking()
+                    .Where(x => x.TreatmentId == treatmentId)
+                    .ToListAsync(cancellationToken);
+
+            _context.TreatmentImages.RemoveRange(treatmentImages);
+            await _context.SaveChangesAsync(cancellationToken);
+            _context.TreatmentImages.AddRange(images);
+            await _context.SaveChangesAsync(cancellationToken);
+            return Unit.Value;
         }
     }
 }

@@ -18,6 +18,7 @@ namespace WebApi.Features.Treatments.Queries.GetActives
         public async Task<Result<List<Treatment>>> Handle(GetActiveTreatmentsQuery request, CancellationToken cancellationToken)
         {
             var treatments = await _context.Treatments
+                .Include(x => x.Images)
                 .AsNoTracking()
                 .Where(x => x.IsActive)
                 .ToListAsync(cancellationToken);
