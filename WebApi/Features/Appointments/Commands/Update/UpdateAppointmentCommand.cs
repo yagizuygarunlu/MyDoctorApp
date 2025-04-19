@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
 
@@ -17,46 +18,50 @@ namespace WebApi.Features.Appointments.Commands.Update
 
     public class UpdateAppointmentCommandValidator : AbstractValidator<UpdateAppointmentCommand>
     {
-        public UpdateAppointmentCommandValidator()
+        public UpdateAppointmentCommandValidator(ILocalizationService _localizationService)
         {
             RuleFor(x => x.DoctorId)
                 .NotEmpty()
-                .WithMessage("Doctor ID is required.")
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.DoctorRequired))
                 .GreaterThan(0)
-                .WithMessage("Doctor ID must be greater than 0.");
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.DoctorIdMustBeGreaterThanZero));
             RuleFor(x => x.PatientName)
                 .NotEmpty()
-                .WithMessage("Patient name is required.");
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.NameRequired));
             RuleFor(x => x.PatientEmail)
                 .NotEmpty()
-                .WithMessage("Patient email is required.")
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.EmailRequired))
                 .EmailAddress()
-                .WithMessage("Invalid email format.");
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidEmail));
             RuleFor(x => x.PatientPhone)
                 .NotEmpty()
-                .WithMessage("Patient phone number is required.")
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.PhoneRequired))
                 .Matches(@"^\+?[1-9]\d{1,14}$")
-                .WithMessage("Invalid phone number format.");
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidPhone));
             RuleFor(x => x.AppointmentDate)
                 .NotEmpty()
-                .WithMessage("Appointment date is required.")
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.DateRequired))
                 .GreaterThan(DateTime.UtcNow)
-                .WithMessage("Appointment date must be in the future.");
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.DateMustBeInFuture));
         }
     }
 
     public class UpdateAppointmentCommandHandler : IRequestHandler<UpdateAppointmentCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
-        public UpdateAppointmentCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+        public UpdateAppointmentCommandHandler(
+            ApplicationDbContext context,
+            ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
         public async Task<Result<Unit>> Handle(UpdateAppointmentCommand request, CancellationToken cancellationToken)
         {
             var appointment = await _context.Appointments.FindAsync(request.Id);
             if (appointment == null)
-                return Result<Unit>.Failure("Appointment not found.");
+                return Result<Unit>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.NotFound));
 
             var patient = await _context.Patients.FindAsync(appointment.PatientId);
             patient.FullName = request.PatientName;

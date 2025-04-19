@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
 
@@ -11,16 +12,20 @@ namespace WebApi.Features.Appointments.Commands.Cancel
     public sealed class CancelAppointmentCommandHandler : IRequestHandler<CancelAppointmentCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
-        public CancelAppointmentCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+        public CancelAppointmentCommandHandler(
+            ApplicationDbContext context,
+            ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
         public async Task<Result<Unit>> Handle(CancelAppointmentCommand request, CancellationToken cancellationToken)
         {
             var appointment = await _context.Appointments.FindAsync(request.Id);
             if (appointment == null)
             {
-                return Result<Unit>.Failure("Appointment not found.");
+                return Result<Unit>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.Cancelled));
             }
             appointment.Status = Domain.Enums.AppointmentStatus.Cancelled;
             await _context.SaveChangesAsync(cancellationToken);

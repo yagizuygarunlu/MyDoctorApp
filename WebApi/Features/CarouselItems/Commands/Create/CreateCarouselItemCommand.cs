@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
@@ -15,27 +16,29 @@ namespace WebApi.Features.CarouselItems.Commands.Create
 
     public class CreateCarouselItemCommandValidator : AbstractValidator<CreateCarouselItemCommand>
     {
-        public CreateCarouselItemCommandValidator()
+        public CreateCarouselItemCommandValidator(ILocalizationService _localizationService)
         {
             RuleFor(x => x.Title)
                 .NotEmpty()
-                .WithMessage("Title is required.");
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.TitleRequired));
             RuleFor(x => x.ImageUrl)
                 .NotEmpty()
-                .WithMessage("Image URL is required.");
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.ImageUrlRequired));
 
             RuleFor(x => x.DisplayOrder)
                 .GreaterThan(0)
-                .WithMessage("Display order must be greater than 0.");
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.InvalidDisplayOrder));
         }
     }
 
     public class CreateCarouselItemCommandHandler : IRequestHandler<CreateCarouselItemCommand, Result<int>>
     {
         private readonly ApplicationDbContext _context;
-        public CreateCarouselItemCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+        public CreateCarouselItemCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
         public async Task<Result<int>> Handle(CreateCarouselItemCommand request, CancellationToken cancellationToken)
         {
@@ -49,7 +52,7 @@ namespace WebApi.Features.CarouselItems.Commands.Create
             };
             _context.CarouselItems.Add(carouselItem);
             await _context.SaveChangesAsync(cancellationToken);
-            return Result<int>.Success(carouselItem.Id);
+            return Result<int>.Success(carouselItem.Id, _localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.Created));
         }
     }
 }

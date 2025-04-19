@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
 
@@ -11,20 +12,21 @@ namespace WebApi.Features.CarouselItems.Commands.Reactivate
     public class ReactivateCarouselItemCommandHandler : IRequestHandler<ReactivateCarouselItemCommand, Result<int>>
     {
         private readonly ApplicationDbContext _context;
-        public ReactivateCarouselItemCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+        public ReactivateCarouselItemCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
         public async Task<Result<int>> Handle(ReactivateCarouselItemCommand request, CancellationToken cancellationToken)
         {
             var carouselItem = await _context.CarouselItems.FindAsync(request.Id);
             if (carouselItem == null)
-            {
-                return Result<int>.Failure("Carousel item not found.");
-            }
+                return Result<int>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.NotFound));
+
             carouselItem.IsActive = true;
             await _context.SaveChangesAsync(cancellationToken);
-            return Result<int>.Success(carouselItem.Id);
+            return Result<int>.Success(carouselItem.Id, _localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.Reactivated));
         }
     }
 }
