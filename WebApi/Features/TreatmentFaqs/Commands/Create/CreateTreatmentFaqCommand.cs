@@ -3,6 +3,7 @@ using MediatR;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Common.Localization;
 
 namespace WebApi.Features.TreatmentFaqs.Commands.Create
 {
@@ -14,29 +15,33 @@ namespace WebApi.Features.TreatmentFaqs.Commands.Create
 
     public class CreateTreatmentFaqCommandValidator : AbstractValidator<CreateTreatmentFaqCommand>
     {
-        public CreateTreatmentFaqCommandValidator()
+        public CreateTreatmentFaqCommandValidator(ILocalizationService localizationService)
         {
             RuleFor(x => x.Question)
                 .NotEmpty()
-                .WithMessage("Question is required.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.QuestionRequired));
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage("Answer is required.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.AnswerRequired));
             RuleFor(x => x.TreatmentId)
                 .NotEmpty()
-                .WithMessage("Treatment ID is required.")
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.TreatmentIdRequired))
                 .GreaterThan(0)
-                .WithMessage("Treatment ID must be greater than 0.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.InvalidTreatmentId));
         }
     }
 
     public class CreateTreatmentFaqCommandHandler : IRequestHandler<CreateTreatmentFaqCommand, Result<int>>
     {
         private readonly ApplicationDbContext _context;
-        public CreateTreatmentFaqCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+
+        public CreateTreatmentFaqCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
+
         public async Task<Result<int>> Handle(CreateTreatmentFaqCommand request, CancellationToken cancellationToken)
         {
             var treatmentFaq = new TreatmentFaq
@@ -45,9 +50,14 @@ namespace WebApi.Features.TreatmentFaqs.Commands.Create
                 Answer = request.Answer,
                 TreatmentId = request.TreatmentId
             };
+
             _context.TreatmentFaqs.Add(treatmentFaq);
-            await _context.SaveChangesAsync(cancellationToken);
-            return Result<int>.Success(treatmentFaq.Id);
+            var saveResult = await _context.SaveChangesAsync(cancellationToken);
+
+            if (saveResult > 0)
+                return Result<int>.Success(treatmentFaq.Id, _localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.Created));
+
+            return Result<int>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.CreationFailed));
         }
     }
 }

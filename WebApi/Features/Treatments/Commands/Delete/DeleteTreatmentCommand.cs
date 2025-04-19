@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Common.Localization;
 
 namespace WebApi.Features.Treatments.Commands.Delete
 {
@@ -11,20 +12,26 @@ namespace WebApi.Features.Treatments.Commands.Delete
     public class DeleteTreatmentCommandHandler : IRequestHandler<DeleteTreatmentCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
-        public DeleteTreatmentCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+
+        public DeleteTreatmentCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
+
         public async Task<Result<Unit>> Handle(DeleteTreatmentCommand request, CancellationToken cancellationToken)
         {
             var treatment = await _context.Treatments.FindAsync(request.Id);
             if (treatment == null)
             {
-                return Result<Unit>.Failure("Treatment not found.");
+                return Result<Unit>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.Treatments.NotFound));
             }
+
             treatment.IsActive = false;
             await _context.SaveChangesAsync(cancellationToken);
-            return Result<Unit>.Success(Unit.Value);
+
+            return Result<Unit>.Success(Unit.Value, _localizationService.GetLocalizedString(LocalizationKeys.Treatments.Deleted));
         }
     }
 }

@@ -4,6 +4,7 @@ using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Common.Localization;
 
 namespace WebApi.Features.Doctors.Commands.Update
 {
@@ -22,59 +23,81 @@ namespace WebApi.Features.Doctors.Commands.Update
 
     public class UpdateDoctorValidator : AbstractValidator<UpdateDoctorCommand>
     {
-        public UpdateDoctorValidator()
+        public UpdateDoctorValidator(ILocalizationService localizationService)
         {
             RuleFor(x => x.Id)
-                .GreaterThan(0).WithMessage("Id must be greater than zero.");
+                .GreaterThan(0)
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.InvalidId));
             RuleFor(x => x.FullName)
-                .NotEmpty().WithMessage("Full name is required.")
-                .MaximumLength(100).WithMessage("Full name must not exceed 100 characters.");
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.FullNameRequired))
+                .MaximumLength(100)
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.FullNameMaxLength));
             RuleFor(x => x.Speciality)
-                .NotEmpty().WithMessage("Speciality is required.")
-                .MaximumLength(50).WithMessage("Speciality must not exceed 50 characters.");
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.SpecialityRequired))
+                .MaximumLength(50)
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.SpecialityMaxLength));
             RuleFor(x => x.SummaryInfo)
-                .NotEmpty().WithMessage("Summary info is required.")
-                .MaximumLength(500).WithMessage("Summary info must not exceed 500 characters.");
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.SummaryInfoRequired))
+                .MaximumLength(500)
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.SummaryInfoMaxLength));
             RuleFor(x => x.Biography)
-                .NotEmpty().WithMessage("Biography is required.")
-                .MaximumLength(2000).WithMessage("Biography must not exceed 2000 characters.");
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.BiographyRequired))
+                .MaximumLength(2000)
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.BiographyMaxLength));
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email is required.")
-                .EmailAddress().WithMessage("Invalid email format.");
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.EmailRequired))
+                .EmailAddress()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.InvalidEmail));
             RuleFor(x => x.PhoneNumber)
-                .NotEmpty().WithMessage("Phone number is required.")
-                .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("Invalid phone number format.");
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.PhoneNumberRequired))
+                .Matches(@"^\+?[1-9]\d{1,14}$")
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.InvalidPhoneNumber));
             RuleFor(x => x.ImageUrl)
-                .NotEmpty().WithMessage("Image URL is required.")
-                .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute)).WithMessage("Invalid image URL format.");
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.ImageUrlRequired))
+                .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute))
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Doctors.InvalidImageUrl));
+        }
+    }
+
+    public sealed class UpdateDoctorHandler : IRequestHandler<UpdateDoctorCommand, Result<int>>
+    {
+        private readonly ApplicationDbContext _dbContext;
+        private readonly ILocalizationService _localizationService;
+
+        public UpdateDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
+        {
+            _dbContext = dbContext;
+            _localizationService = localizationService;
         }
 
-        public sealed class UpdateDoctorHandler : IRequestHandler<UpdateDoctorCommand, Result<int>>
+        public async Task<Result<int>> Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
         {
-            private readonly ApplicationDbContext _dbContext;
-            public UpdateDoctorHandler(ApplicationDbContext dbContext)
+            var doctor = await _dbContext.Doctors.FindAsync(new object[] { request.Id }, cancellationToken);
+            if (doctor == null)
             {
-                _dbContext = dbContext;
+                return Result<int>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.NotFound));
             }
-            public async Task<Result<int>> Handle(UpdateDoctorCommand request, CancellationToken cancellationToken)
-            {
-                var doctor = await _dbContext.Doctors.FindAsync(new object[] { request.Id }, cancellationToken);
-                if (doctor == null)
-                {
-                    return Result<int>.Failure("Doctor not found.");
-                }
-                doctor.FullName = request.FullName;
-                doctor.Speciality = request.Speciality;
-                doctor.SummaryInfo = request.SummaryInfo;
-                doctor.Biography = request.Biography;
-                doctor.Email = request.Email;
-                doctor.PhoneNumber = request.PhoneNumber;
-                doctor.ImageUrl = request.ImageUrl;
-                doctor.Address = request.Address;
-                doctor.PersonalLinks = request.PersonalLinks;
-                await _dbContext.SaveChangesAsync(cancellationToken);
-                return Result<int>.Success(doctor.Id);
-            }
+
+            doctor.FullName = request.FullName;
+            doctor.Speciality = request.Speciality;
+            doctor.SummaryInfo = request.SummaryInfo;
+            doctor.Biography = request.Biography;
+            doctor.Email = request.Email;
+            doctor.PhoneNumber = request.PhoneNumber;
+            doctor.ImageUrl = request.ImageUrl;
+            doctor.Address = request.Address;
+            doctor.PersonalLinks = request.PersonalLinks;
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return Result<int>.Success(doctor.Id, _localizationService.GetLocalizedString(LocalizationKeys.Doctors.Updated));
         }
     }
 }

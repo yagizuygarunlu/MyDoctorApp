@@ -1,64 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,7 +58,298 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="WelcomeMessage" xml:space="preserve">
-    <value />
+  
+  <!-- Common -->
+  <data name="Common.Success" xml:space="preserve">
+    <value>Operation completed successfully.</value>
+  </data>
+  <data name="Common.Error" xml:space="preserve">
+    <value>An error occurred.</value>
+  </data>
+  
+  <!-- Appointments -->
+  <data name="Appointments.NotFound" xml:space="preserve">
+    <value>Appointment not found.</value>
+  </data>
+  <data name="Appointments.Created" xml:space="preserve">
+    <value>Appointment created successfully.</value>
+  </data>
+  <data name="Appointments.Updated" xml:space="preserve">
+    <value>Appointment updated successfully.</value>
+  </data>
+  <data name="Appointments.Deleted" xml:space="preserve">
+    <value>Appointment deleted successfully.</value>
+  </data>
+  <data name="Appointments.InvalidDate" xml:space="preserve">
+    <value>Invalid appointment date.</value>
+  </data>
+  <data name="Appointments.InvalidTime" xml:space="preserve">
+    <value>Invalid appointment time.</value>
+  </data>
+  <data name="Appointments.InvalidStatus" xml:space="preserve">
+    <value>Invalid appointment status.</value>
+  </data>
+  <data name="Appointments.Approved" xml:space="preserve">
+    <value>Appointment approved successfully.</value>
+  </data>
+  <data name="Appointments.Rejected" xml:space="preserve">
+    <value>Appointment rejected.</value>
+  </data>
+  <data name="Appointments.Cancelled" xml:space="preserve">
+    <value>Appointment cancelled successfully.</value>
+  </data>
+  <data name="Appointments.DoctorRequired" xml:space="preserve">
+    <value>Doctor is required.</value>
+  </data>
+  <data name="Appointments.DoctorIdMustBeGreaterThanZero" xml:space="preserve">
+    <value>Doctor ID must be greater than zero.</value>
+  </data>
+  <data name="Appointments.DateRequired" xml:space="preserve">
+    <value>Appointment date is required.</value>
+  </data>
+  <data name="Appointments.DateMustBeInFuture" xml:space="preserve">
+    <value>Appointment date must be in the future.</value>
+  </data>
+  
+  <!-- Authentication -->
+  <data name="Auth.InvalidCredentials" xml:space="preserve">
+    <value>Invalid credentials.</value>
+  </data>
+  <data name="Auth.UserNotFound" xml:space="preserve">
+    <value>User not found.</value>
+  </data>
+  <data name="Auth.PasswordIncorrect" xml:space="preserve">
+    <value>Password is incorrect.</value>
+  </data>
+  <data name="Auth.TokenExpired" xml:space="preserve">
+    <value>Token has expired.</value>
+  </data>
+  <data name="Auth.TokenInvalid" xml:space="preserve">
+    <value>Token is invalid.</value>
+  </data>
+  <data name="Auth.TokenMissing" xml:space="preserve">
+    <value>Token is missing.</value>
+  </data>
+  <data name="Auth.UserAlreadyExists" xml:space="preserve">
+    <value>User already exists.</value>
+  </data>
+  <data name="Auth.UserCreated" xml:space="preserve">
+    <value>User created successfully.</value>
+  </data>
+  <data name="Auth.UserUpdated" xml:space="preserve">
+    <value>User updated successfully.</value>
+  </data>
+  <data name="Auth.UserDeleted" xml:space="preserve">
+    <value>User deleted successfully.</value>
+  </data>
+  
+  <!-- Patients -->
+  <data name="Patients.NotFound" xml:space="preserve">
+    <value>Patient not found.</value>
+  </data>
+  <data name="Patients.Created" xml:space="preserve">
+    <value>Patient created successfully.</value>
+  </data>
+  <data name="Patients.Updated" xml:space="preserve">
+    <value>Patient updated successfully.</value>
+  </data>
+  <data name="Patients.Deleted" xml:space="preserve">
+    <value>Patient deleted successfully.</value>
+  </data>
+  <data name="Patients.NameRequired" xml:space="preserve">
+    <value>Patient name is required.</value>
+  </data>
+  <data name="Patients.EmailRequired" xml:space="preserve">
+    <value>Patient email is required.</value>
+  </data>
+  <data name="Patients.InvalidEmail" xml:space="preserve">
+    <value>Invalid email format.</value>
+  </data>
+  <data name="Patients.PhoneRequired" xml:space="preserve">
+    <value>Patient phone number is required.</value>
+  </data>
+  <data name="Patients.InvalidPhone" xml:space="preserve">
+    <value>Invalid phone number format.</value>
+  </data>
+  <data name="Patients.CreatingFailed" xml:space="preserve">
+    <value>Failed to create patient.</value>
+  </data>
+  
+  <!-- Treatments -->
+  <data name="Treatments.NotFound" xml:space="preserve">
+    <value>Treatment not found.</value>
+  </data>
+  <data name="Treatments.Created" xml:space="preserve">
+    <value>Treatment created successfully.</value>
+  </data>
+  <data name="Treatments.Updated" xml:space="preserve">
+    <value>Treatment updated successfully.</value>
+  </data>
+  <data name="Treatments.Deleted" xml:space="preserve">
+    <value>Treatment deleted successfully.</value>
+  </data>
+  <data name="Treatments.Reactivated" xml:space="preserve">
+    <value>Treatment reactivated successfully.</value>
+  </data>
+  <data name="Treatments.NameRequired" xml:space="preserve">
+    <value>Treatment name is required.</value>
+  </data>
+  <data name="Treatments.QuestionRequired" xml:space="preserve">
+    <value>Question is required.</value>
+  </data>
+  <data name="Treatments.AnswerRequired" xml:space="preserve">
+    <value>Answer is required.</value>
+  </data>
+  <data name="Treatments.TreatmentIdRequired" xml:space="preserve">
+    <value>Treatment ID is required.</value>
+  </data>
+  <data name="Treatments.InvalidTreatmentId" xml:space="preserve">
+    <value>Treatment ID must be greater than 0.</value>
+  </data>
+  <data name="Treatments.CreationFailed" xml:space="preserve">
+    <value>Failed to create treatment.</value>
+  </data>
+  
+  <!-- Carousel Items -->
+  <data name="CarouselItems.NotFound" xml:space="preserve">
+    <value>Carousel item not found.</value>
+  </data>
+  <data name="CarouselItems.Created" xml:space="preserve">
+    <value>Carousel item created successfully.</value>
+  </data>
+  <data name="CarouselItems.Updated" xml:space="preserve">
+    <value>Carousel item updated successfully.</value>
+  </data>
+  <data name="CarouselItems.Deleted" xml:space="preserve">
+    <value>Carousel item deleted successfully.</value>
+  </data>
+  <data name="CarouselItems.TitleRequired" xml:space="preserve">
+    <value>Carousel item title is required.</value>
+  </data>
+  <data name="CarouselItems.ImageUrlRequired" xml:space="preserve">
+    <value>Carousel item image URL is required.</value>
+  </data>
+  <data name="CarouselItems.InvalidDisplayOrder" xml:space="preserve">
+    <value>Display order must be greater than 0.</value>
+  </data>
+  <data name="CarouselItems.Reactivated" xml:space="preserve">
+    <value>Carousel item reactivated successfully.</value>
+  </data>
+  
+  <!-- Doctors -->
+  <data name="Doctors.FullNameRequired" xml:space="preserve">
+    <value>Doctor's full name is required.</value>
+  </data>
+  <data name="Doctors.FullNameMaxLength" xml:space="preserve">
+    <value>Doctor's full name must not exceed 100 characters.</value>
+  </data>
+  <data name="Doctors.SpecialityRequired" xml:space="preserve">
+    <value>Speciality is required.</value>
+  </data>
+  <data name="Doctors.SpecialityMaxLength" xml:space="preserve">
+    <value>Speciality must not exceed 50 characters.</value>
+  </data>
+  <data name="Doctors.SummaryInfoRequired" xml:space="preserve">
+    <value>Summary information is required.</value>
+  </data>
+  <data name="Doctors.SummaryInfoMaxLength" xml:space="preserve">
+    <value>Summary information must not exceed 500 characters.</value>
+  </data>
+  <data name="Doctors.BiographyRequired" xml:space="preserve">
+    <value>Biography is required.</value>
+  </data>
+  <data name="Doctors.BiographyMaxLength" xml:space="preserve">
+    <value>Biography must not exceed 2000 characters.</value>
+  </data>
+  <data name="Doctors.EmailRequired" xml:space="preserve">
+    <value>Email is required.</value>
+  </data>
+  <data name="Doctors.InvalidEmail" xml:space="preserve">
+    <value>Invalid email format.</value>
+  </data>
+  <data name="Doctors.PhoneNumberRequired" xml:space="preserve">
+    <value>Phone number is required.</value>
+  </data>
+  <data name="Doctors.InvalidPhoneNumber" xml:space="preserve">
+    <value>Invalid phone number format.</value>
+  </data>
+  <data name="Doctors.ImageUrlRequired" xml:space="preserve">
+    <value>Image URL is required.</value>
+  </data>
+  <data name="Doctors.InvalidImageUrl" xml:space="preserve">
+    <value>Invalid image URL format.</value>
+  </data>
+  <data name="Doctors.NotFound" xml:space="preserve">
+    <value>Doctor not found.</value>
+  </data>
+  <data name="Doctors.Created" xml:space="preserve">
+    <value>Doctor created successfully.</value>
+  </data>
+  <data name="Doctors.Updated" xml:space="preserve">
+    <value>Doctor updated successfully.</value>
+  </data>
+  <data name="Doctors.Deleted" xml:space="preserve">
+    <value>Doctor deleted successfully.</value>
+  </data>
+  <data name="Doctors.Reactivated" xml:space="preserve">
+    <value>Doctor reactivated successfully.</value>
+  </data>
+  <data name="Doctors.InvalidId" xml:space="preserve">
+    <value>Doctor ID must be greater than zero.</value>
+  </data>
+  
+  <!-- Reviews -->
+  <data name="Reviews.DoctorIdRequired" xml:space="preserve">
+    <value>Doctor ID is required.</value>
+  </data>
+  <data name="Reviews.NameRequired" xml:space="preserve">
+    <value>Name is required.</value>
+  </data>
+  <data name="Reviews.MessageRequired" xml:space="preserve">
+    <value>Message is required.</value>
+  </data>
+  <data name="Reviews.InvalidRating" xml:space="preserve">
+    <value>Rating must be between 1 and 5.</value>
+  </data>
+  <data name="Reviews.Created" xml:space="preserve">
+    <value>Review created successfully.</value>
+  </data>
+  <data name="Reviews.Updated" xml:space="preserve">
+    <value>Review updated successfully.</value>
+  </data>
+  <data name="Reviews.Deleted" xml:space="preserve">
+    <value>Review deleted successfully.</value>
+  </data>
+  <data name="Reviews.CreationFailed" xml:space="preserve">
+    <value>Failed to create review.</value>
+  </data>
+  
+  <!-- Treatment FAQs -->
+  <data name="TreatmentFaqs.QuestionRequired" xml:space="preserve">
+    <value>Question is required.</value>
+  </data>
+  <data name="TreatmentFaqs.AnswerRequired" xml:space="preserve">
+    <value>Answer is required.</value>
+  </data>
+  <data name="TreatmentFaqs.TreatmentIdRequired" xml:space="preserve">
+    <value>Treatment ID is required.</value>
+  </data>
+  <data name="TreatmentFaqs.InvalidTreatmentId" xml:space="preserve">
+    <value>Treatment ID must be greater than 0.</value>
+  </data>
+  <data name="TreatmentFaqs.Created" xml:space="preserve">
+    <value>Treatment FAQ created successfully.</value>
+  </data>
+  <data name="TreatmentFaqs.CreationFailed" xml:space="preserve">
+    <value>Failed to create treatment FAQ.</value>
+  </data>
+  <data name="TreatmentFaqs.NotFound" xml:space="preserve">
+    <value>Treatment FAQ not found.</value>
+  </data>
+  <data name="TreatmentFaqs.Deleted" xml:space="preserve">
+    <value>Treatment FAQ deleted successfully.</value>
+  </data>
+  <data name="TreatmentFaqs.Updated" xml:space="preserve">
+    <value>Treatment FAQ updated successfully.</value>
   </data>
 </root>

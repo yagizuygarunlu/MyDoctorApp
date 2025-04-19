@@ -2,6 +2,7 @@
 using MediatR;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Common.Localization;
 
 namespace WebApi.Features.TreatmentFaqs.Commands.Update
 {
@@ -14,41 +15,48 @@ namespace WebApi.Features.TreatmentFaqs.Commands.Update
 
     public class UpdateTreatmentFaqCommandValidator : AbstractValidator<UpdateTreatmentFaqCommand>
     {
-        public UpdateTreatmentFaqCommandValidator()
+        public UpdateTreatmentFaqCommandValidator(ILocalizationService localizationService)
         {
             RuleFor(x => x.Question)
                 .NotEmpty()
-                .WithMessage("Question is required.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.QuestionRequired));
             RuleFor(x => x.Answer)
                 .NotEmpty()
-                .WithMessage("Answer is required.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.AnswerRequired));
             RuleFor(x => x.TreatmentId)
                 .NotEmpty()
-                .WithMessage("Treatment ID is required.")
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.TreatmentIdRequired))
                 .GreaterThan(0)
-                .WithMessage("Treatment ID must be greater than 0.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.InvalidTreatmentId));
         }
     }
 
     public class UpdateTreatmentFaqCommandHandler : IRequestHandler<UpdateTreatmentFaqCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
-        public UpdateTreatmentFaqCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+
+        public UpdateTreatmentFaqCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
+
         public async Task<Result<Unit>> Handle(UpdateTreatmentFaqCommand request, CancellationToken cancellationToken)
         {
             var treatmentFaq = await _context.TreatmentFaqs.FindAsync(request.Id);
             if (treatmentFaq == null)
             {
-                return Result<Unit>.Failure("Treatment FAQ not found.");
+                return Result<Unit>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.NotFound));
             }
+
             treatmentFaq.Question = request.Question;
             treatmentFaq.Answer = request.Answer;
             treatmentFaq.TreatmentId = request.TreatmentId;
+
             await _context.SaveChangesAsync(cancellationToken);
-            return Result<Unit>.Success(Unit.Value);
+
+            return Result<Unit>.Success(Unit.Value, _localizationService.GetLocalizedString(LocalizationKeys.TreatmentFaqs.Updated));
         }
     }
 }

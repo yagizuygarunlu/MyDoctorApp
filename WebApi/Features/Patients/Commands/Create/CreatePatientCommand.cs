@@ -3,6 +3,7 @@ using MediatR;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Common.Localization;
 
 namespace WebApi.Features.Patients.Commands.Create
 {
@@ -14,33 +15,37 @@ namespace WebApi.Features.Patients.Commands.Create
 
     public class CreatePatientCommandValidator : AbstractValidator<CreatePatientCommand>
     {
-        public CreatePatientCommandValidator()
+        public CreatePatientCommandValidator(ILocalizationService localizationService)
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .WithMessage("Name is required.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.NameRequired));
 
             RuleFor(x => x.Email)
                 .NotEmpty()
-                .WithMessage("Email is required.")
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.EmailRequired))
                 .EmailAddress()
-                .WithMessage("Invalid email format.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidEmail));
 
             RuleFor(x => x.Phone)
                 .NotEmpty()
-                .WithMessage("Phone number is required.")
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.PhoneRequired))
                 .Matches(@"^\+?[1-9]\d{1,14}$")
-                .WithMessage("Invalid phone number format.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidPhone));
         }
     }
 
     public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand, Result<Guid>>
     {
         private readonly ApplicationDbContext _context;
-        public CreatePatientCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+
+        public CreatePatientCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
+
         public async Task<Result<Guid>> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
         {
             var patient = new Patient
@@ -49,9 +54,11 @@ namespace WebApi.Features.Patients.Commands.Create
                 Email = request.Email,
                 PhoneNumber = request.Phone
             };
+
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync(cancellationToken);
-            return Result<Guid>.Success(patient.Id);
+
+            return Result<Guid>.Success(patient.Id, _localizationService.GetLocalizedString(LocalizationKeys.Patients.Created));
         }
     }
 }

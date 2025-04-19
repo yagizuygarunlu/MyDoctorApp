@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Common.Localization;
 
 namespace WebApi.Features.Reviews.Commands
 {
@@ -16,33 +17,38 @@ namespace WebApi.Features.Reviews.Commands
 
     public class CreateReviewValidator : AbstractValidator<CreateReviewCommand>
     {
-        public CreateReviewValidator()
+        public CreateReviewValidator(ILocalizationService localizationService)
         {
             RuleFor(x => x.DoctorId)
-                .GreaterThan(0).WithMessage("DoctorId must be greater than zero.");
+                .GreaterThan(0)
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Reviews.DoctorIdRequired));
 
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Name is required.")
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Reviews.NameRequired))
                 .MaximumLength(100);
 
             RuleFor(x => x.Message)
-                .NotEmpty().WithMessage("Message is required.")
+                .NotEmpty()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Reviews.MessageRequired))
                 .MaximumLength(1000);
 
             RuleFor(x => x.Rating)
-                .InclusiveBetween(1, 5).WithMessage("Rating must be between 1 and 5.");
+                .InclusiveBetween(1, 5)
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Reviews.InvalidRating));
         }
     }
 
     public sealed class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Result<int>>
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly ILocalizationService _localizationService;
 
-        public CreateReviewHandler(ApplicationDbContext dbContext)
+        public CreateReviewHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
         {
             _dbContext = dbContext;
+            _localizationService = localizationService;
         }
-
 
         public async Task<Result<int>> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
         {
@@ -60,9 +66,9 @@ namespace WebApi.Features.Reviews.Commands
             var saveResult = await _dbContext.SaveChangesAsync(cancellationToken);
 
             if (saveResult > 0)
-                return Result<int>.Success(review.Id);
+                return Result<int>.Success(review.Id, _localizationService.GetLocalizedString(LocalizationKeys.Reviews.Created));
 
-            return Result<int>.Failure("Review could not be created.");
+            return Result<int>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.Reviews.CreationFailed));
         }
     }
 }

@@ -4,6 +4,7 @@ using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
 using WebApi.Infrastructure.Persistence;
+using WebApi.Common.Localization;
 
 namespace WebApi.Features.Doctors.Commands.Create
 {
@@ -22,38 +23,44 @@ namespace WebApi.Features.Doctors.Commands.Create
 
     public class CreateDoctorValidator : AbstractValidator<CreateDoctorCommand>
     {
-        public CreateDoctorValidator()
+        private readonly ILocalizationService _localizationService;
+
+        public CreateDoctorValidator(ILocalizationService localizationService)
         {
+            _localizationService = localizationService;
+
             RuleFor(x => x.FullName)
-                .NotEmpty().WithMessage("Full name is required.")
-                .MaximumLength(100).WithMessage("Full name must not exceed 100 characters.");
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.FullNameRequired))
+                .MaximumLength(100).WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.FullNameMaxLength));
             RuleFor(x => x.Speciality)
-                .NotEmpty().WithMessage("Speciality is required.")
-                .MaximumLength(50).WithMessage("Speciality must not exceed 50 characters.");
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.SpecialityRequired))
+                .MaximumLength(50).WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.SpecialityMaxLength));
             RuleFor(x => x.SummaryInfo)
-                .NotEmpty().WithMessage("Summary info is required.")
-                .MaximumLength(500).WithMessage("Summary info must not exceed 500 characters.");
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.SummaryInfoRequired))
+                .MaximumLength(500).WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.SummaryInfoMaxLength));
             RuleFor(x => x.Biography)
-                .NotEmpty().WithMessage("Biography is required.")
-                .MaximumLength(2000).WithMessage("Biography must not exceed 2000 characters.");
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.BiographyRequired))
+                .MaximumLength(2000).WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.BiographyMaxLength));
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email is required.")
-                .EmailAddress().WithMessage("Invalid email format.");
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.EmailRequired))
+                .EmailAddress().WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.InvalidEmail));
             RuleFor(x => x.PhoneNumber)
-                .NotEmpty().WithMessage("Phone number is required.")
-                .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("Invalid phone number format.");
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.PhoneNumberRequired))
+                .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.InvalidPhoneNumber));
             RuleFor(x => x.ImageUrl)
-                .NotEmpty().WithMessage("Image URL is required.")
-                .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute)).WithMessage("Invalid image URL format.");
+                .NotEmpty().WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.ImageUrlRequired))
+                .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute)).WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.InvalidImageUrl));
         }
     }
 
     public sealed class CreateDoctorHandler : IRequestHandler<CreateDoctorCommand, Result<int>>
     {
         private readonly ApplicationDbContext _dbContext;
-        public CreateDoctorHandler(ApplicationDbContext dbContext)
+        private readonly ILocalizationService _localizationService;
+        public CreateDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
         {
             _dbContext = dbContext;
+            _localizationService = localizationService;
         }
         public async Task<Result<int>> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
         {
@@ -71,7 +78,7 @@ namespace WebApi.Features.Doctors.Commands.Create
             };
             _dbContext.Doctors.Add(doctor);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            return Result<int>.Success(doctor.Id);
+            return Result<int>.Success(doctor.Id,_localizationService.GetLocalizedString(LocalizationKeys.Doctors.Created));
         }
     }
 }
