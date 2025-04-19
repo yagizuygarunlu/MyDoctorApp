@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity.Data;
 using WebApi.Features.Auth.Commands.Login;
 
 namespace WebApi.Features.Auth.Commands

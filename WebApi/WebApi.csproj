@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Resources\SharedResource.en-US.resx" />
+    <EmbeddedResource Remove="Resources\SharedResource.tr-TR.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.5.0" />
@@ -25,6 +30,11 @@
   <ItemGroup>
     <Folder Include="Features\Doctors\Queries\" />
     <Folder Include="Features\Reviews\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\SharedResource.en-US.resx" />
+    <None Include="Resources\SharedResource.tr-TR.resx" />
   </ItemGroup>
 
 </Project>

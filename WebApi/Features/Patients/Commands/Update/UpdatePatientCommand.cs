@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
 
@@ -11,51 +12,55 @@ namespace WebApi.Features.Patients.Commands.Update
         string Phone,
         string Email
         ): IRequest<Result<Unit>>;
-    
-    public class UpdatePatientCommandValidator: AbstractValidator<UpdatePatientCommand>
+
+    public class UpdatePatientCommandValidator : AbstractValidator<UpdatePatientCommand>
     {
-        public UpdatePatientCommandValidator()
+        public UpdatePatientCommandValidator(ILocalizationService localizationService)
         {
             RuleFor(x => x.Name)
                .NotEmpty()
-               .WithMessage("Name is required.");
+               .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.NameRequired));
 
             RuleFor(x => x.Email)
                 .NotEmpty()
-                .WithMessage("Email is required.")
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.EmailRequired))
                 .EmailAddress()
-                .WithMessage("Invalid email format.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidEmail));
 
             RuleFor(x => x.Phone)
                 .NotEmpty()
-                .WithMessage("Phone number is required.")
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.PhoneRequired))
                 .Matches(@"^\+?[1-9]\d{1,14}$")
-                .WithMessage("Invalid phone number format.");
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidPhone));
         }
     }
 
-    public sealed class UpdatePatientCommandHandler: IRequestHandler<UpdatePatientCommand,Result<Unit>>
+    public sealed class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand, Result<Unit>>
     {
         private readonly ApplicationDbContext _context;
-        public UpdatePatientCommandHandler(ApplicationDbContext context)
+        private readonly ILocalizationService _localizationService;
+
+        public UpdatePatientCommandHandler(
+            ApplicationDbContext context,
+            ILocalizationService localizationService)
         {
             _context = context;
+            _localizationService = localizationService;
         }
 
         public async Task<Result<Unit>> Handle(UpdatePatientCommand request, CancellationToken cancellationToken)
         {
             var patient = await _context.Patients.FindAsync(request.Id);
             if (patient == null)
-            {
-                return Result<Unit>.Failure("Patient not found");
-            }
+                return Result<Unit>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.Patients.NotFound));
 
             patient.FullName = request.Name;
             patient.PhoneNumber = request.Phone;
             patient.Email = request.Email;
             _context.Patients.Update(patient);
             await _context.SaveChangesAsync(cancellationToken);
-            return Result<Unit>.Success(Unit.Value);
+
+            return Result<Unit>.Success(Unit.Value, _localizationService.GetLocalizedString(LocalizationKeys.Patients.Updated));
         }
     }
 }
