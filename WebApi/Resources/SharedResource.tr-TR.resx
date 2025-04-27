@@ -1,6 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -59,16 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  <!-- Common -->
   <data name="Common.Success" xml:space="preserve">
     <value>İşlem başarıyla tamamlandı.</value>
   </data>
   <data name="Common.Error" xml:space="preserve">
     <value>Bir hata oluştu.</value>
   </data>
-  
-  <!-- Appointments -->
   <data name="Appointments.NotFound" xml:space="preserve">
     <value>Randevu bulunamadı.</value>
   </data>
@@ -111,8 +165,6 @@
   <data name="Appointments.DateMustBeInFuture" xml:space="preserve">
     <value>Randevu tarihi gelecekte olmalıdır.</value>
   </data>
-  
-  <!-- Authentication -->
   <data name="Auth.InvalidCredentials" xml:space="preserve">
     <value>Geçersiz kimlik bilgileri.</value>
   </data>
@@ -143,8 +195,6 @@
   <data name="Auth.UserDeleted" xml:space="preserve">
     <value>Kullanıcı başarıyla silindi.</value>
   </data>
-  
-  <!-- Patients -->
   <data name="Patients.NotFound" xml:space="preserve">
     <value>Hasta bulunamadı.</value>
   </data>
@@ -175,8 +225,6 @@
   <data name="Patients.CreatingFailed" xml:space="preserve">
     <value>Hasta oluşturma başarısız oldu.</value>
   </data>
-  
-  <!-- Treatments -->
   <data name="Treatments.NotFound" xml:space="preserve">
     <value>Tedavi bulunamadı.</value>
   </data>
@@ -210,8 +258,6 @@
   <data name="Treatments.CreationFailed" xml:space="preserve">
     <value>Tedavi oluşturma başarısız oldu.</value>
   </data>
-  
-  <!-- Carousel Items -->
   <data name="CarouselItems.NotFound" xml:space="preserve">
     <value>Carousel öğesi bulunamadı.</value>
   </data>
@@ -236,8 +282,6 @@
   <data name="CarouselItems.Reactivated" xml:space="preserve">
     <value>Carousel öğesi başarıyla yeniden aktifleştirildi.</value>
   </data>
-  
-  <!-- Doctors -->
   <data name="Doctors.FullNameRequired" xml:space="preserve">
     <value>Doktorun tam adı gereklidir.</value>
   </data>
@@ -298,8 +342,6 @@
   <data name="Doctors.InvalidId" xml:space="preserve">
     <value>Doktor ID sıfırdan büyük olmalıdır.</value>
   </data>
-  
-  <!-- Reviews -->
   <data name="Reviews.DoctorIdRequired" xml:space="preserve">
     <value>Doktor ID gereklidir.</value>
   </data>
@@ -324,8 +366,6 @@
   <data name="Reviews.CreationFailed" xml:space="preserve">
     <value>Yorum oluşturma başarısız oldu.</value>
   </data>
-  
-  <!-- Treatment FAQs -->
   <data name="TreatmentFaqs.QuestionRequired" xml:space="preserve">
     <value>Soru gereklidir.</value>
   </data>
@@ -353,368 +393,10 @@
   <data name="TreatmentFaqs.Updated" xml:space="preserve">
     <value>Tedavi SSS başarıyla güncellendi.</value>
   </data>
-  
-  <!-- Existing key -->
-  <data name="WelcomeMessage" xml:space="preserve">
-    <value>Hoşgeldiniz</value>
-  </data>
-</root>
-<root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  
-  <!-- Common -->
-  <data name="Common.Success" xml:space="preserve">
-    <value>İşlem başarıyla tamamlandı.</value>
-  </data>
-  <data name="Common.Error" xml:space="preserve">
-    <value>Bir hata oluştu.</value>
-  </data>
-  
-  <!-- Appointments -->
-  <data name="Appointments.NotFound" xml:space="preserve">
-    <value>Randevu bulunamadı.</value>
-  </data>
-  <data name="Appointments.Created" xml:space="preserve">
-    <value>Randevu başarıyla oluşturuldu.</value>
-  </data>
-  <data name="Appointments.Updated" xml:space="preserve">
-    <value>Randevu başarıyla güncellendi.</value>
-  </data>
-  <data name="Appointments.Deleted" xml:space="preserve">
-    <value>Randevu başarıyla silindi.</value>
-  </data>
-  <data name="Appointments.InvalidDate" xml:space="preserve">
-    <value>Geçersiz randevu tarihi.</value>
-  </data>
-  <data name="Appointments.InvalidTime" xml:space="preserve">
-    <value>Geçersiz randevu saati.</value>
-  </data>
-  <data name="Appointments.InvalidStatus" xml:space="preserve">
-    <value>Geçersiz randevu durumu.</value>
-  </data>
-  <data name="Appointments.Approved" xml:space="preserve">
-    <value>Randevu başarıyla onaylandı.</value>
-  </data>
-  <data name="Appointments.Rejected" xml:space="preserve">
-    <value>Randevu reddedildi.</value>
-  </data>
-  <data name="Appointments.Cancelled" xml:space="preserve">
-    <value>Randevu başarıyla iptal edildi.</value>
-  </data>
-  <data name="Appointments.DoctorRequired" xml:space="preserve">
-    <value>Doktor gereklidir.</value>
-  </data>
-  <data name="Appointments.DoctorIdMustBeGreaterThanZero" xml:space="preserve">
-    <value>Doktor ID sıfırdan büyük olmalıdır.</value>
-  </data>
-  <data name="Appointments.DateRequired" xml:space="preserve">
-    <value>Randevu tarihi gereklidir.</value>
-  </data>
-  <data name="Appointments.DateMustBeInFuture" xml:space="preserve">
-    <value>Randevu tarihi gelecekte olmalıdır.</value>
-  </data>
-  
-  <!-- Authentication -->
-  <data name="Auth.InvalidCredentials" xml:space="preserve">
-    <value>Geçersiz kimlik bilgileri.</value>
-  </data>
-  <data name="Auth.UserNotFound" xml:space="preserve">
-    <value>Kullanıcı bulunamadı.</value>
-  </data>
-  <data name="Auth.PasswordIncorrect" xml:space="preserve">
-    <value>Şifre yanlış.</value>
-  </data>
-  <data name="Auth.TokenExpired" xml:space="preserve">
-    <value>Token süresi doldu.</value>
-  </data>
-  <data name="Auth.TokenInvalid" xml:space="preserve">
-    <value>Geçersiz token.</value>
-  </data>
-  <data name="Auth.TokenMissing" xml:space="preserve">
-    <value>Token eksik.</value>
-  </data>
-  <data name="Auth.UserAlreadyExists" xml:space="preserve">
-    <value>Kullanıcı zaten mevcut.</value>
-  </data>
-  <data name="Auth.UserCreated" xml:space="preserve">
-    <value>Kullanıcı başarıyla oluşturuldu.</value>
-  </data>
-  <data name="Auth.UserUpdated" xml:space="preserve">
-    <value>Kullanıcı başarıyla güncellendi.</value>
-  </data>
-  <data name="Auth.UserDeleted" xml:space="preserve">
-    <value>Kullanıcı başarıyla silindi.</value>
-  </data>
-  
-  <!-- Patients -->
-  <data name="Patients.NotFound" xml:space="preserve">
-    <value>Hasta bulunamadı.</value>
-  </data>
-  <data name="Patients.Created" xml:space="preserve">
-    <value>Hasta başarıyla oluşturuldu.</value>
-  </data>
-  <data name="Patients.Updated" xml:space="preserve">
-    <value>Hasta başarıyla güncellendi.</value>
-  </data>
-  <data name="Patients.Deleted" xml:space="preserve">
-    <value>Hasta başarıyla silindi.</value>
-  </data>
-  <data name="Patients.NameRequired" xml:space="preserve">
-    <value>Hasta adı gereklidir.</value>
-  </data>
-  <data name="Patients.EmailRequired" xml:space="preserve">
-    <value>Hasta e-postası gereklidir.</value>
-  </data>
-  <data name="Patients.InvalidEmail" xml:space="preserve">
-    <value>Geçersiz e-posta formatı.</value>
-  </data>
-  <data name="Patients.PhoneRequired" xml:space="preserve">
-    <value>Hasta telefon numarası gereklidir.</value>
-  </data>
-  <data name="Patients.InvalidPhone" xml:space="preserve">
-    <value>Geçersiz telefon numarası formatı.</value>
-  </data>
-  <data name="Patients.CreatingFailed" xml:space="preserve">
-    <value>Hasta oluşturma başarısız oldu.</value>
-  </data>
-  
-  <!-- Treatments -->
-  <data name="Treatments.NotFound" xml:space="preserve">
-    <value>Tedavi bulunamadı.</value>
-  </data>
-  <data name="Treatments.Created" xml:space="preserve">
-    <value>Tedavi başarıyla oluşturuldu.</value>
-  </data>
-  <data name="Treatments.Updated" xml:space="preserve">
-    <value>Tedavi başarıyla güncellendi.</value>
-  </data>
-  <data name="Treatments.Deleted" xml:space="preserve">
-    <value>Tedavi başarıyla silindi.</value>
-  </data>
-  <data name="Treatments.Reactivated" xml:space="preserve">
-    <value>Tedavi başarıyla yeniden aktifleştirildi.</value>
-  </data>
-  <data name="Treatments.NameRequired" xml:space="preserve">
-    <value>Tedavi adı gereklidir.</value>
-  </data>
-  <data name="Treatments.QuestionRequired" xml:space="preserve">
-    <value>Soru gereklidir.</value>
-  </data>
-  <data name="Treatments.AnswerRequired" xml:space="preserve">
-    <value>Cevap gereklidir.</value>
-  </data>
-  <data name="Treatments.TreatmentIdRequired" xml:space="preserve">
-    <value>Tedavi ID gereklidir.</value>
-  </data>
-  <data name="Treatments.InvalidTreatmentId" xml:space="preserve">
-    <value>Tedavi ID sıfırdan büyük olmalıdır.</value>
-  </data>
-  <data name="Treatments.CreationFailed" xml:space="preserve">
-    <value>Tedavi oluşturma başarısız oldu.</value>
-  </data>
-  
-  <!-- Carousel Items -->
-  <data name="CarouselItems.NotFound" xml:space="preserve">
-    <value>Carousel öğesi bulunamadı.</value>
-  </data>
-  <data name="CarouselItems.Created" xml:space="preserve">
-    <value>Carousel öğesi başarıyla oluşturuldu.</value>
-  </data>
-  <data name="CarouselItems.Updated" xml:space="preserve">
-    <value>Carousel öğesi başarıyla güncellendi.</value>
-  </data>
-  <data name="CarouselItems.Deleted" xml:space="preserve">
-    <value>Carousel öğesi başarıyla silindi.</value>
-  </data>
-  <data name="CarouselItems.TitleRequired" xml:space="preserve">
-    <value>Carousel öğesi başlığı gereklidir.</value>
-  </data>
-  <data name="CarouselItems.ImageUrlRequired" xml:space="preserve">
-    <value>Carousel öğesi resim URL'si gereklidir.</value>
-  </data>
-  <data name="CarouselItems.InvalidDisplayOrder" xml:space="preserve">
-    <value>Görüntüleme sırası sıfırdan büyük olmalıdır.</value>
-  </data>
-  <data name="CarouselItems.Reactivated" xml:space="preserve">
-    <value>Carousel öğesi başarıyla yeniden aktifleştirildi.</value>
-  </data>
-  
-  <!-- Doctors -->
-  <data name="Doctors.FullNameRequired" xml:space="preserve">
-    <value>Doktorun tam adı gereklidir.</value>
-  </data>
-  <data name="Doctors.FullNameMaxLength" xml:space="preserve">
-    <value>Doktorun tam adı 100 karakteri geçmemelidir.</value>
-  </data>
-  <data name="Doctors.SpecialityRequired" xml:space="preserve">
-    <value>Uzmanlık alanı gereklidir.</value>
-  </data>
-  <data name="Doctors.SpecialityMaxLength" xml:space="preserve">
-    <value>Uzmanlık alanı 50 karakteri geçmemelidir.</value>
-  </data>
-  <data name="Doctors.SummaryInfoRequired" xml:space="preserve">
-    <value>Özet bilgisi gereklidir.</value>
-  </data>
-  <data name="Doctors.SummaryInfoMaxLength" xml:space="preserve">
-    <value>Özet bilgisi 500 karakteri geçmemelidir.</value>
-  </data>
-  <data name="Doctors.BiographyRequired" xml:space="preserve">
-    <value>Biyografi gereklidir.</value>
-  </data>
-  <data name="Doctors.BiographyMaxLength" xml:space="preserve">
-    <value>Biyografi 2000 karakteri geçmemelidir.</value>
-  </data>
-  <data name="Doctors.EmailRequired" xml:space="preserve">
-    <value>E-posta gereklidir.</value>
-  </data>
-  <data name="Doctors.InvalidEmail" xml:space="preserve">
-    <value>Geçersiz e-posta formatı.</value>
-  </data>
-  <data name="Doctors.PhoneNumberRequired" xml:space="preserve">
-    <value>Telefon numarası gereklidir.</value>
-  </data>
-  <data name="Doctors.InvalidPhoneNumber" xml:space="preserve">
-    <value>Geçersiz telefon numarası formatı.</value>
-  </data>
-  <data name="Doctors.ImageUrlRequired" xml:space="preserve">
-    <value>Resim URL'si gereklidir.</value>
-  </data>
-  <data name="Doctors.InvalidImageUrl" xml:space="preserve">
-    <value>Geçersiz resim URL'si formatı.</value>
-  </data>
-  <data name="Doctors.NotFound" xml:space="preserve">
-    <value>Doktor bulunamadı.</value>
-  </data>
-  <data name="Doctors.Created" xml:space="preserve">
-    <value>Doktor başarıyla oluşturuldu.</value>
-  </data>
-  <data name="Doctors.Updated" xml:space="preserve">
-    <value>Doktor başarıyla güncellendi.</value>
-  </data>
-  <data name="Doctors.Deleted" xml:space="preserve">
-    <value>Doktor başarıyla silindi.</value>
-  </data>
-  <data name="Doctors.Reactivated" xml:space="preserve">
-    <value>Doktor başarıyla yeniden aktifleştirildi.</value>
-  </data>
-  <data name="Doctors.InvalidId" xml:space="preserve">
-    <value>Doktor ID sıfırdan büyük olmalıdır.</value>
-  </data>
-  
-  <!-- Reviews -->
-  <data name="Reviews.DoctorIdRequired" xml:space="preserve">
-    <value>Doktor ID gereklidir.</value>
-  </data>
-  <data name="Reviews.NameRequired" xml:space="preserve">
-    <value>İsim gereklidir.</value>
-  </data>
-  <data name="Reviews.MessageRequired" xml:space="preserve">
-    <value>Mesaj gereklidir.</value>
-  </data>
-  <data name="Reviews.InvalidRating" xml:space="preserve">
-    <value>Puan 1 ile 5 arasında olmalıdır.</value>
-  </data>
-  <data name="Reviews.Created" xml:space="preserve">
-    <value>Yorum başarıyla oluşturuldu.</value>
-  </data>
-  <data name="Reviews.Updated" xml:space="preserve">
-    <value>Yorum başarıyla güncellendi.</value>
-  </data>
-  <data name="Reviews.Deleted" xml:space="preserve">
-    <value>Yorum başarıyla silindi.</value>
-  </data>
-  <data name="Reviews.CreationFailed" xml:space="preserve">
-    <value>Yorum oluşturma başarısız oldu.</value>
-  </data>
-  
-  <!-- Treatment FAQs -->
-  <data name="TreatmentFaqs.QuestionRequired" xml:space="preserve">
-    <value>Soru gereklidir.</value>
-  </data>
-  <data name="TreatmentFaqs.AnswerRequired" xml:space="preserve">
-    <value>Cevap gereklidir.</value>
-  </data>
-  <data name="TreatmentFaqs.TreatmentIdRequired" xml:space="preserve">
-    <value>Tedavi ID gereklidir.</value>
-  </data>
-  <data name="TreatmentFaqs.InvalidTreatmentId" xml:space="preserve">
-    <value>Tedavi ID sıfırdan büyük olmalıdır.</value>
-  </data>
-  <data name="TreatmentFaqs.Created" xml:space="preserve">
-    <value>Tedavi SSS başarıyla oluşturuldu.</value>
-  </data>
-  <data name="TreatmentFaqs.CreationFailed" xml:space="preserve">
-    <value>Tedavi SSS oluşturma başarısız oldu.</value>
-  </data>
-  <data name="TreatmentFaqs.NotFound" xml:space="preserve">
-    <value>Tedavi SSS bulunamadı.</value>
-  </data>
-  <data name="TreatmentFaqs.Deleted" xml:space="preserve">
-    <value>Tedavi SSS başarıyla silindi.</value>
-  </data>
-  <data name="TreatmentFaqs.Updated" xml:space="preserve">
-    <value>Tedavi SSS başarıyla güncellendi.</value>
-  </data>
-  
-  <!-- Existing key -->
-  <data name="WelcomeMessage" xml:space="preserve">
-    <value>Hoşgeldiniz</value>
+  <data name="Common.NotFound" xml:space="preserve">
+    <value>İstenen kaynak bulunamadı</value>
+  </data>
+  <data name="Exceptions.InvalidArgument" xml:space="preserve">
+    <value>Geçersiz argüman sağlandı</value>
   </data>
 </root>

@@ -6,6 +6,10 @@
         {
             public const string Success = "Common.Success";
             public const string Error = "Common.Error";
+            public const string NotFound = "Common.NotFound";
+            public const string InvalidRequest = "Common.InvalidRequest";
+            public const string Unauthorized = "Common.Unauthorized";
+            public const string ServerError = "Common.ServerError";
         }
         public static class Appointments
         {
@@ -123,6 +127,17 @@
             public const string NotFound = "TreatmentFaqs.NotFound";
             public const string Deleted = "TreatmentFaqs.Deleted";
             public const string Updated = "TreatmentFaqs.Updated";
+        }
+        public static class Exceptions
+        {
+            public const string InvalidArgument = "Exceptions.InvalidArgument";
+            public const string ValidationError = "Exceptions.ValidationError";
+            public const string ResourceNotFound = "Exceptions.ResourceNotFound";
+            public const string AuthorizationFailed = "Exceptions.AuthorizationFailed";
+            public const string InvalidOperation = "Exceptions.InvalidOperation";
+            public const string NotImplemented = "Exceptions.NotImplemented";
+            public const string UnexpectedError = "Exceptions.UnexpectedError";
+            public const string TooManyRequests = "Exceptions.TooManyRequests";
         }
     }
 }

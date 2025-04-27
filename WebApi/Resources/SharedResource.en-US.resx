@@ -1,5 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -58,16 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  <!-- Common -->
   <data name="Common.Success" xml:space="preserve">
     <value>Operation completed successfully.</value>
   </data>
   <data name="Common.Error" xml:space="preserve">
     <value>An error occurred.</value>
   </data>
-  
-  <!-- Appointments -->
   <data name="Appointments.NotFound" xml:space="preserve">
     <value>Appointment not found.</value>
   </data>
@@ -110,8 +165,6 @@
   <data name="Appointments.DateMustBeInFuture" xml:space="preserve">
     <value>Appointment date must be in the future.</value>
   </data>
-  
-  <!-- Authentication -->
   <data name="Auth.InvalidCredentials" xml:space="preserve">
     <value>Invalid credentials.</value>
   </data>
@@ -142,8 +195,6 @@
   <data name="Auth.UserDeleted" xml:space="preserve">
     <value>User deleted successfully.</value>
   </data>
-  
-  <!-- Patients -->
   <data name="Patients.NotFound" xml:space="preserve">
     <value>Patient not found.</value>
   </data>
@@ -174,8 +225,6 @@
   <data name="Patients.CreatingFailed" xml:space="preserve">
     <value>Failed to create patient.</value>
   </data>
-  
-  <!-- Treatments -->
   <data name="Treatments.NotFound" xml:space="preserve">
     <value>Treatment not found.</value>
   </data>
@@ -209,8 +258,6 @@
   <data name="Treatments.CreationFailed" xml:space="preserve">
     <value>Failed to create treatment.</value>
   </data>
-  
-  <!-- Carousel Items -->
   <data name="CarouselItems.NotFound" xml:space="preserve">
     <value>Carousel item not found.</value>
   </data>
@@ -235,8 +282,6 @@
   <data name="CarouselItems.Reactivated" xml:space="preserve">
     <value>Carousel item reactivated successfully.</value>
   </data>
-  
-  <!-- Doctors -->
   <data name="Doctors.FullNameRequired" xml:space="preserve">
     <value>Doctor's full name is required.</value>
   </data>
@@ -297,8 +342,6 @@
   <data name="Doctors.InvalidId" xml:space="preserve">
     <value>Doctor ID must be greater than zero.</value>
   </data>
-  
-  <!-- Reviews -->
   <data name="Reviews.DoctorIdRequired" xml:space="preserve">
     <value>Doctor ID is required.</value>
   </data>
@@ -323,8 +366,6 @@
   <data name="Reviews.CreationFailed" xml:space="preserve">
     <value>Failed to create review.</value>
   </data>
-  
-  <!-- Treatment FAQs -->
   <data name="TreatmentFaqs.QuestionRequired" xml:space="preserve">
     <value>Question is required.</value>
   </data>
@@ -351,5 +392,11 @@
   </data>
   <data name="TreatmentFaqs.Updated" xml:space="preserve">
     <value>Treatment FAQ updated successfully.</value>
+  </data>
+  <data name="Common.NotFound" xml:space="preserve">
+    <value>The requested resource was not found</value>
+  </data>
+  <data name="Exceptions.InvalidArgument" xml:space="preserve">
+    <value>Invalid argument provided</value>
   </data>
 </root>

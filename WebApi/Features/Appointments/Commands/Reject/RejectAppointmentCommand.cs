@@ -26,7 +26,7 @@ namespace WebApi.Features.Appointments.Commands.Reject
             var appointment = await _context.Appointments.FindAsync(request.Id);
             if (appointment == null)
             {
-                return Result<Unit>.Failure(_localizationService.GetLocalizedString(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.Rejected)));
+                return Result<Unit>.Failure(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.Rejected));
             }
             appointment.Status = Domain.Enums.AppointmentStatus.Rejected;
             appointment.RejectionReason = request.Reason;

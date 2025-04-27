@@ -2,6 +2,7 @@
 using WebApi.Features.Appointments.Commands.Approve;
 using WebApi.Features.Appointments.Commands.Cancel;
 using WebApi.Features.Appointments.Commands.Create;
+using WebApi.Features.Appointments.Commands.Reject;
 using WebApi.Features.Appointments.Queries.GetAppointments;
 using WebApi.Features.Appointments.Queries.GetTodays;
 
@@ -35,6 +36,11 @@ namespace WebApi.Features.Appointments
             group.MapPut("/{id:int}/cancel", async (IMediator mediator, int id, CancellationToken cancellationToken) =>
             {
                 var result = await mediator.Send(new CancelAppointmentCommand(id), cancellationToken);
+                return Results.Ok(result);
+            });
+            group.MapPut("/{id:int}/reject", async (IMediator mediator, ApproveAppointmentCommand command, CancellationToken cancellationToken) =>
+            {
+                var result = await mediator.Send(command,cancellationToken);
                 return Results.Ok(result);
             });
         }

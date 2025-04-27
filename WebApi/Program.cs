@@ -1,8 +1,11 @@
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
+using Serilog;
 using System.Globalization;
 using System.Text;
 using WebApi.Common.Localization;
@@ -15,14 +18,47 @@ using WebApi.Features.TreatmentFaqs;
 using WebApi.Features.Treatments;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Services;
+using OpenTelemetry.Trace;
+using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("https://mydoctorapp.com")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource
+        .AddService("MyDoctorApp"))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddConsoleExporter())
+    .WithLogging(logging => logging
+        .AddConsoleExporter());
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
@@ -40,6 +76,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
        };
    });
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("FixedPolicy", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 10;
+        limiterOptions.Window = TimeSpan.FromSeconds(10);
+        limiterOptions.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 2;
+    });
+
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        await context.HttpContext.Response.WriteAsJsonAsync(LocalizationKeys.Exceptions.TooManyRequests, token);
+    };
+});
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthService>();
@@ -62,6 +115,12 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+    app.UseCors("AllowAllOrigins");
+else
+    app.UseCors("AllowSpecificOrigin");
+
+app.UseRateLimiter();
 app.UseRequestLocalization();
 app.UseExceptionHandler();
 app.UseAuthentication();
