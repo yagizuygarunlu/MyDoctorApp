@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Common.Extensions;
 using WebApi.Features.Reviews.Commands;
 
 namespace WebApi.Features.Reviews
@@ -10,7 +11,7 @@ namespace WebApi.Features.Reviews
             routes.MapPost("/reviews", async (CreateReviewCommand command, IMediator mediator) =>
             {
                 var result = await mediator.Send(command);
-                return result.Succeeded ? Results.Created($"/reviews/{result.Data}", result.Data) : Results.BadRequest(result.Errors);
+                return result.ToApiResult();
             })
             .WithName("CreateReview")
             .Produces<int>(StatusCodes.Status201Created)

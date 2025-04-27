@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using WebApi.Common.Extensions;
+using WebApi.Common.Localization;
 using WebApi.Features.Doctors.Commands.Create;
 using WebApi.Features.Doctors.Commands.Delete;
 using WebApi.Features.Doctors.Commands.Reactivate;
@@ -15,30 +17,31 @@ namespace WebApi.Features.Doctors
             group.MapPost("/", async (CreateDoctorCommand command, IMediator mediator) =>
             {
                 var result = await mediator.Send(command);
-                return Results.Created($"/api/doctors/{result.Data}", result.Data);
+                return result.ToApiResult();
             });
 
-            group.MapPut("/{id:int}", async (int id, UpdateDoctorCommand command, IMediator mediator) =>
+            group.MapPut("/{id:int}", async (int id, UpdateDoctorCommand command, IMediator mediator, ILocalizationService localizationService) =>
             {
                 if (id != command.Id)
                 {
-                    return Results.BadRequest("Id in the URL does not match the Id in the body.");
+                    return Results.BadRequest(localizationService.GetLocalizedString(LocalizationKeys.Common.IdMismatch));
                 }
                 var result = await mediator.Send(command);
-                return Results.Ok(result);
+                return result.ToApiResult();
             });
 
             group.MapDelete("/{id:int}", async (int id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new DeleteDoctorCommand(id));
-                return result;
+                return result.ToApiResult();
             });
 
             group.MapPut("/{id:int}/reactivate", async (int id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new ReactivateDoctorCommand(id));
-                return result;
+                return result.ToApiResult();
             });
         }
     }
 }
+

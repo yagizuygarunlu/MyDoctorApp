@@ -399,4 +399,7 @@
   <data name="Exceptions.InvalidArgument" xml:space="preserve">
     <value>Geçersiz argüman sağlandı</value>
   </data>
+  <data name="Common.IdMismatch" xml:space="preserve">
+    <value>URL'deki Id, gövdedeki Id ile eşleşmiyor.</value>
+  </data>
 </root>

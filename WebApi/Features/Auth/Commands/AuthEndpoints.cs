@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Common.Extensions;
 using WebApi.Features.Auth.Commands.Login;
 
 namespace WebApi.Features.Auth.Commands
@@ -11,14 +12,13 @@ namespace WebApi.Features.Auth.Commands
             group.MapPost("/login", async (IMediator _mediator, LoginCommand request, CancellationToken cancellationToken) =>
             {
                 var response = await _mediator.Send(request, cancellationToken);
-                return Results.Ok(response);
+                return Results.Ok(response); 
             });
 
-
-            //group.MapPost("/register", async (RegisterRequest request, IAuthService authService) =>
+            //group.MapPost("/register", async (RegisterRequest request, IMediator mediator, CancellationToken cancellationToken) =>
             //{
-            //    var response = await authService.RegisterAsync(request);
-            //    return Results.Ok(response);
+            //    var response = await mediator.Send(new RegisterCommand(request), cancellationToken);
+            //    return response.ToApiResult();
             //})
             //.WithName("Register")
             //.Produces(StatusCodes.Status201Created)

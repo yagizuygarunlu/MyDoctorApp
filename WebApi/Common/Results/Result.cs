@@ -24,6 +24,8 @@ namespace WebApi.Common.Results
 
         public static Result<T> Success(T data) => new Result<T> { Succeeded = true, Data = data };
 
+        public static Result<T> Success(T data, string? message) => new Result<T> { Succeeded = true, Data = data, Error = message };
+
         public static Result<T> Failure(string error, ResultErrorType errorType = ResultErrorType.Unknown)
             => new Result<T> { Succeeded = false, Error = error, ErrorType = errorType };
     }

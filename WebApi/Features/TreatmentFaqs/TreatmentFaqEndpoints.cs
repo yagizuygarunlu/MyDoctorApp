@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Common.Localization;
 
 namespace WebApi.Features.TreatmentFaqs
 {
@@ -17,11 +18,11 @@ namespace WebApi.Features.TreatmentFaqs
                 var result = await mediator.Send(command);
                 return Results.Ok(result);
             });
-            group.MapPut("/{id}", async (IMediator mediator, int id, Commands.Update.UpdateTreatmentFaqCommand command) =>
+            group.MapPut("/{id}", async (IMediator mediator, int id, Commands.Update.UpdateTreatmentFaqCommand command, ILocalizationService localizationService) =>
             {
                 if (id != command.Id)
                 {
-                    return Results.BadRequest("Id in the URL does not match the Id in the body.");
+                    return Results.BadRequest(localizationService.GetLocalizedString(LocalizationKeys.Common.IdMismatch));
                 }
                 var result = await mediator.Send(command);
                 return Results.Ok(result);

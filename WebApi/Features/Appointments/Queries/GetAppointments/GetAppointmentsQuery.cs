@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using WebApi.Common.Results;
 using WebApi.Domain.Enums;
 using WebApi.DTOs;
@@ -12,7 +13,28 @@ namespace WebApi.Features.Appointments.Queries.GetAppointments
         DateTime? StartDate,
         DateTime? EndDate,
         string? PatientName,
-        AppointmentStatus? AppointmentStatus) : IRequest<Result<List<AppointmentDto>>>;
+        AppointmentStatus? AppointmentStatus) : IRequest<Result<List<AppointmentDto>>>, IParsable<GetAppointmentsQuery>
+    {
+        // Default constructor needed for binding
+        public GetAppointmentsQuery() : this(null, null, null, null, null) { }
+
+        // Implementation of IParsable interface
+        public static GetAppointmentsQuery Parse(string s, IFormatProvider? provider)
+        {
+            if (TryParse(s, provider, out var result))
+                return result;
+
+            throw new FormatException($"Could not parse query: {s}");
+        }
+
+        public static bool TryParse(string? s, IFormatProvider? provider, out GetAppointmentsQuery result)
+        {
+            // This method won't actually be called with the full query string
+            // It's just required by the interface
+            result = new GetAppointmentsQuery();
+            return true;
+        }
+    }
 
     public sealed class GetAppointmentsQueryHandler : IRequestHandler<GetAppointmentsQuery, Result<List<AppointmentDto>>>
     {

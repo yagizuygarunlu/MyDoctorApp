@@ -51,6 +51,7 @@ namespace WebApi.Features.CarouselItems.Commands.Update
             carouselItem.ImageUrl = request.ImageUrl;
             carouselItem.DisplayOrder = request.DisplayOrder;
             await _context.SaveChangesAsync(cancellationToken);
+
             return Result<int>.Success(carouselItem.Id, _localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.Updated));
         }
     }

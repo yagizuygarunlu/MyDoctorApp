@@ -10,6 +10,7 @@
             public const string InvalidRequest = "Common.InvalidRequest";
             public const string Unauthorized = "Common.Unauthorized";
             public const string ServerError = "Common.ServerError";
+            public const string IdMismatch = "Common.IdMismatch"; // New key for ID mismatch error
         }
         public static class Appointments
         {

@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using WebApi.Common.Extensions;
+using WebApi.Common.Localization;
 using WebApi.Features.CarouselItems.Commands.Create;
 using WebApi.Features.CarouselItems.Commands.Delete;
 using WebApi.Features.CarouselItems.Commands.Reactivate;
@@ -16,36 +18,36 @@ namespace WebApi.Features.CarouselItems
             group.MapGet("/", async (IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetAllCarouselItemsQuery());
-                return Results.Ok(result);
+                return result.ToApiResult();
             });
             group.MapGet("/active", async (IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetActiveCarouselItemsQuery());
-                return Results.Ok(result);
+                return result.ToApiResult();
             });
             group.MapPost("/", async (CreateCarouselItemCommand command, IMediator mediator) =>
             {
                 var result = await mediator.Send(command);
-                return Results.Created($"/api/carousel-items/{result.Data}", result.Data);
+                return result.ToApiResult();
             });
-            group.MapPut("/{id:int}", async (int id, UpdateCarouselItemCommand command, IMediator mediator) =>
+            group.MapPut("/{id:int}", async (int id, UpdateCarouselItemCommand command, IMediator mediator, ILocalizationService localizationService) =>
             {
                 if (id != command.Id)
                 {
-                    return Results.BadRequest("Id in the URL does not match the Id in the body.");
+                    return Results.BadRequest(localizationService.GetLocalizedString(LocalizationKeys.Common.IdMismatch));
                 }
                 var result = await mediator.Send(command);
-                return Results.Ok(result);
+                return result.ToApiResult();
             });
             group.MapDelete("/{id:int}", async (int id, IMediator mediator) =>
             {
-                await mediator.Send(new DeleteCarouselItemCommand(id));
-                return Results.NoContent();
+                var result = await mediator.Send(new DeleteCarouselItemCommand(id));
+                return result.ToApiResult();
             });
             group.MapPut("/{id:int}/reactivate", async (int id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new ReactivateCarouselItemCommand(id));
-                return Results.Ok(result);
+                return result.ToApiResult();
             });
         }
     }
