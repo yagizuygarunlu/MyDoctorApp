@@ -1,6 +1,133 @@
-@WebApi_HostAddress = http://localhost:5280
+﻿@WebApi_HostAddress = https://localhost:7106
 
-GET {{WebApi_HostAddress}}/weatherforecast/
-Accept: application/json
+### Authentication endpoints
+POST {{WebApi_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "string",
+  "password": "string"
+}
+
+### Treatments endpoints
+GET {{WebApi_HostAddress}}/api/treatments
 
 ###
+GET {{WebApi_HostAddress}}/api/treatments/active
+
+###
+POST {{WebApi_HostAddress}}/api/treatments
+Content-Type: application/json
+
+{
+  "name": "string",
+  "description": "string",
+  "price": 0
+}
+
+###
+PUT {{WebApi_HostAddress}}/api/treatments/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "string",
+  "description": "string",
+  "price": 0
+}
+
+###
+DELETE {{WebApi_HostAddress}}/api/treatments/1
+
+###
+PUT {{WebApi_HostAddress}}/api/treatments/1/reactivate
+
+### Doctors endpoints
+### Create Doctor
+POST {{WebApi_HostAddress}}/api/doctors
+Content-Type: application/json
+
+{
+  "fullName": "Dr. John Doe",
+  "speciality": "Cardiology",
+  "summaryInfo": "Experienced cardiologist with 10 years of practice.",
+  "biography": "Dr. John Doe has been working in the field of cardiology for over a decade...",
+  "email": "johndoe@example.com",
+  "phoneNumber": "+1234567890",
+  "imageUrl": "https://example.com/images/johndoe.jpg",
+  "address": {
+    "addressLine": "123 Main St",
+    "street": "Main Street",
+    "district": "Central District",
+    "country": "USA",
+    "city": "New York",
+    "zipCode": "10001"
+  },
+  "personalLinks": [
+    {
+      "url": "https://linkedin.com/in/johndoe",
+      "platform": {
+        "name": "LinkedIn",
+        "iconClass": "linkedin-icon"
+      }
+    }
+  ]
+}
+
+
+###
+PUT {{WebApi_HostAddress}}/api/doctors/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "firstName": "string",
+  "lastName": "string",
+  "specialization": "string"
+}
+
+###
+DELETE {{WebApi_HostAddress}}/api/doctors/1
+
+###
+PUT {{WebApi_HostAddress}}/api/doctors/1/reactivate
+
+### Appointments endpoints
+GET {{WebApi_HostAddress}}/api/appointments
+# Query parameters can be added here
+# ?patientId=1&doctorId=1&status=Pending
+
+###
+GET {{WebApi_HostAddress}}/api/appointments/todays
+
+###
+POST {{WebApi_HostAddress}}/api/appointments
+Content-Type: application/json
+
+{
+  "patientId": "string",
+  "doctorId": "string",
+  "startTime": "2023-01-01T12:00:00",
+  "endTime": "2023-01-01T13:00:00",
+  "reason": "string"
+}
+
+###
+PUT {{WebApi_HostAddress}}/api/appointments/1/approve
+Content-Type: application/json
+
+{
+  "doctorId": "string"
+}
+
+###
+PUT {{WebApi_HostAddress}}/api/appointments/1/cancel
+
+###
+PUT {{WebApi_HostAddress}}/api/appointments/1/reject
+Content-Type: application/json
+
+{
+  "id": 1,
+  "reason": "string"
+}

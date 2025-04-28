@@ -140,11 +140,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.Run();
-
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var passwordService = scope.ServiceProvider.GetRequiredService<PasswordService>();
+    context.Database.Migrate();
     DataSeeder.SeedAdminUser(context, passwordService);
 }
+app.Run();
+
