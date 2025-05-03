@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
@@ -11,10 +12,10 @@ namespace WebApi.Features.Appointments.Commands.Cancel
 
     public sealed class CancelAppointmentCommandHandler : IRequestHandler<CancelAppointmentCommand, Result<Unit>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly ILocalizationService _localizationService;
         public CancelAppointmentCommandHandler(
-            ApplicationDbContext context,
+            IApplicationDbContext context,
             ILocalizationService localizationService)
         {
             _context = context;

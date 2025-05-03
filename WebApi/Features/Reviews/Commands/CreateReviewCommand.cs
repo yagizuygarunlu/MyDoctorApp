@@ -5,6 +5,7 @@ using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Common.Localization;
+using WebApi.Application.Common.Interfaces;
 
 namespace WebApi.Features.Reviews.Commands
 {
@@ -41,7 +42,7 @@ namespace WebApi.Features.Reviews.Commands
 
     public sealed class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Result<int>>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
 
         public CreateReviewHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)

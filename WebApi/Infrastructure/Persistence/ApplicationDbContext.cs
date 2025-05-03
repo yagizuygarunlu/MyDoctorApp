@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
 
 namespace WebApi.Infrastructure.Persistence
 {
-    public sealed class ApplicationDbContext : DbContext
+    public sealed class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

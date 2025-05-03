@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
@@ -22,7 +23,7 @@ namespace WebApi.Features.Doctors.Commands.Delete
 
     public sealed class DeleteDoctorHandler : IRequestHandler<DeleteDoctorCommand, Result<int>>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
 
         public DeleteDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)

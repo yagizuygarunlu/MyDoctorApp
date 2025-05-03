@@ -1,8 +1,11 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
+using WebApi.Domain.Enums;
 using WebApi.Features.Patients.Commands.Create;
 using WebApi.Infrastructure.Persistence;
 
@@ -19,8 +22,15 @@ namespace WebApi.Features.Appointments.Commands.Create
 
     public class CreateAppointmentCommandValidator : AbstractValidator<CreateAppointmentCommand>
     {
-        public CreateAppointmentCommandValidator(ILocalizationService _localizationService)
+        private readonly IApplicationDbContext _context;
+        private readonly ILocalizationService _localizationService;
+        public CreateAppointmentCommandValidator(
+           IApplicationDbContext context,
+           ILocalizationService localizationService)
         {
+            _context = context;
+            _localizationService = localizationService;
+
             RuleFor(x => x.DoctorId)
                 .NotEmpty()
                 .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.DoctorRequired))
@@ -44,16 +54,54 @@ namespace WebApi.Features.Appointments.Commands.Create
                 .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.DateRequired))
                 .GreaterThan(DateTime.UtcNow)
                 .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.DateMustBeInFuture));
+
+            RuleFor(x => x)
+              .MustAsync(IsDoctorAvailableAsync)
+              .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.DoctorUnavailable))
+              .MustAsync(IsPatientAvailableAsync)
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Appointments.PatientAlreadyHasAppointment));
+        }
+        private async Task<bool> IsDoctorAvailableAsync(CreateAppointmentCommand request, CancellationToken cancellationToken)
+        {
+            var appointmentDateTimeOffset = new DateTimeOffset(request.AppointmentDate);
+            var appointmentStart = appointmentDateTimeOffset.AddMinutes(-30);
+            var appointmentEnd = appointmentDateTimeOffset.AddMinutes(30);
+
+            return !await _context.Appointments
+                .Where(a =>
+                    a.DoctorId == request.DoctorId &&
+                    a.Date >= appointmentStart &&
+                    a.Date <= appointmentEnd &&
+                    (a.Status == AppointmentStatus.Pending || a.Status == AppointmentStatus.Approved))
+                .AnyAsync(cancellationToken);
+        }
+
+        private async Task<bool> IsPatientAvailableAsync(CreateAppointmentCommand request, CancellationToken cancellationToken)
+        {
+            var appointmentDateTimeOffset = new DateTimeOffset(request.AppointmentDate);
+
+            var existingPatient = await _context.Patients
+                .FirstOrDefaultAsync(p => p.Email == request.PatientEmail, cancellationToken);
+
+            if (existingPatient == null)
+                return true;
+            
+            return !await _context.Appointments
+                .Where(a =>
+                    a.PatientId == existingPatient.Id &&
+                    a.Date.Date == appointmentDateTimeOffset.Date &&
+                    (a.Status == AppointmentStatus.Pending || a.Status == AppointmentStatus.Approved))
+                .AnyAsync(cancellationToken);
         }
     }
     public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointmentCommand, Result<Guid>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly IMediator _mediator;
         private readonly ILocalizationService _localizationService;
 
         public CreateAppointmentCommandHandler(
-            ApplicationDbContext context,
+            IApplicationDbContext context,
             IMediator mediator,
             ILocalizationService localizationService)
         {

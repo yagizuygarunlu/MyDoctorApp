@@ -2,6 +2,7 @@
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Common.Localization;
+using WebApi.Application.Common.Interfaces;
 
 namespace WebApi.Features.Treatments.Commands.Reactivate
 {
@@ -11,10 +12,10 @@ namespace WebApi.Features.Treatments.Commands.Reactivate
 
     public class ReactivateTreatmentCommandHandler : IRequestHandler<ReactivateTreatmentCommand, Result<int>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly ILocalizationService _localizationService;
 
-        public ReactivateTreatmentCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
+        public ReactivateTreatmentCommandHandler(IApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
             _localizationService = localizationService;

@@ -101,16 +101,19 @@ GET {{WebApi_HostAddress}}/api/appointments
 GET {{WebApi_HostAddress}}/api/appointments/todays
 
 ###
+### Create Appointment
 POST {{WebApi_HostAddress}}/api/appointments
 Content-Type: application/json
 
 {
-  "patientId": "string",
-  "doctorId": "string",
-  "startTime": "2023-01-01T12:00:00",
-  "endTime": "2023-01-01T13:00:00",
-  "reason": "string"
+  "doctorId": 1,
+  "patientName": "Jane Doe",
+  "patientEmail": "jane.doe@example.com",
+  "patientPhone": "+1234567890",
+  "appointmentDate": "2025-06-15T10:30:00Z",
+  "notes": "Regular checkup"
 }
+
 
 ###
 PUT {{WebApi_HostAddress}}/api/appointments/1/approve

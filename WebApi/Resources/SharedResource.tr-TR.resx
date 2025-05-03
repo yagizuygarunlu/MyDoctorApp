@@ -402,4 +402,13 @@
   <data name="Common.IdMismatch" xml:space="preserve">
     <value>URL'deki Id, gövdedeki Id ile eşleşmiyor.</value>
   </data>
+  <data name="Appointments.DoctorUnavailable" xml:space="preserve">
+    <value>Doktor seçilen saatte müsait değil.</value>
+  </data>
+  <data name="Appointments.PatientAlreadyHasAppointment" xml:space="preserve">
+    <value>Hasta, seçilen saatte zaten bir randevuya sahip.</value>
+  </data>
+  <data name="Doctors.EmailAlreadyExists" xml:space="preserve">
+    <value>Bu e-posta adresine sahip bir doktor zaten mevcut.</value>
+  </data>
 </root>

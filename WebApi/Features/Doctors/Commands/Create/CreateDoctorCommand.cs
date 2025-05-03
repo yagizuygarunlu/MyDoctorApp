@@ -5,6 +5,8 @@ using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Common.Localization;
+using Microsoft.EntityFrameworkCore;
+using WebApi.Application.Common.Interfaces;
 
 namespace WebApi.Features.Doctors.Commands.Create
 {
@@ -55,7 +57,7 @@ namespace WebApi.Features.Doctors.Commands.Create
 
     public sealed class CreateDoctorHandler : IRequestHandler<CreateDoctorCommand, Result<int>>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
         public CreateDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
         {
@@ -64,6 +66,12 @@ namespace WebApi.Features.Doctors.Commands.Create
         }
         public async Task<Result<int>> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
         {
+            var emailExists = await _dbContext.Doctors
+             .AnyAsync(d => d.Email == request.Email, cancellationToken);
+
+            if (emailExists)
+                return Result<int>.Conflict(_localizationService.GetLocalizedString(LocalizationKeys.Doctors.EmailAlreadyExists));
+            
             var doctor = new Doctor
             {
                 FullName = request.FullName,

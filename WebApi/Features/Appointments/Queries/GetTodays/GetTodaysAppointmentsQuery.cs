@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Results;
 using WebApi.DTOs;
-using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.Appointments.Queries.GetTodays
 {
@@ -10,8 +10,8 @@ namespace WebApi.Features.Appointments.Queries.GetTodays
 
     public sealed class GetTodaysAppointmentsQueryHandler : IRequestHandler<GetTodaysAppointmentsQuery, Result<List<AppointmentDto>>>
     {
-        private readonly ApplicationDbContext _context;
-        public GetTodaysAppointmentsQueryHandler(ApplicationDbContext context)
+        private readonly IApplicationDbContext _context;
+        public GetTodaysAppointmentsQueryHandler(IApplicationDbContext context)
         {
             _context = context;
         }

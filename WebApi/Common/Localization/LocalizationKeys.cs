@@ -10,7 +10,7 @@
             public const string InvalidRequest = "Common.InvalidRequest";
             public const string Unauthorized = "Common.Unauthorized";
             public const string ServerError = "Common.ServerError";
-            public const string IdMismatch = "Common.IdMismatch"; // New key for ID mismatch error
+            public const string IdMismatch = "Common.IdMismatch";
         }
         public static class Appointments
         {
@@ -28,6 +28,8 @@
             public const string DoctorIdMustBeGreaterThanZero = "Appointments.DoctorIdMustBeGreaterThanZero";
             public const string DateRequired = "Appointments.DateRequired";
             public const string DateMustBeInFuture = "Appointments.DateMustBeInFuture";
+            public const string PatientAlreadyHasAppointment = "Appointments.PatientAlreadyHasAppointment";
+            public const string DoctorUnavailable = "Appointments.DoctorUnavailable";
         }
         public static class Auth
         {
@@ -105,6 +107,7 @@
             public const string Deleted = "Doctors.Deleted";
             public const string Reactivated = "Doctors.Reactivated";
             public const string InvalidId = "Doctors.InvalidId";
+            public const string EmailAlreadyExists = "Doctors.EmailAlreadyExists";
         }
         public static class Reviews
         {

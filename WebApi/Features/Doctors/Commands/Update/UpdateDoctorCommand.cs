@@ -5,6 +5,7 @@ using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Common.Localization;
+using WebApi.Application.Common.Interfaces;
 
 namespace WebApi.Features.Doctors.Commands.Update
 {
@@ -68,7 +69,7 @@ namespace WebApi.Features.Doctors.Commands.Update
 
     public sealed class UpdateDoctorHandler : IRequestHandler<UpdateDoctorCommand, Result<int>>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
 
         public UpdateDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)

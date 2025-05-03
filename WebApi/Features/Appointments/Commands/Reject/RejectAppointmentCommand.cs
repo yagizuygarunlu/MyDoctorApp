@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
@@ -12,10 +13,10 @@ namespace WebApi.Features.Appointments.Commands.Reject
 
     public sealed class RejectAppointmentCommandHandler : IRequestHandler<RejectAppointmentCommand, Result<Unit>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly ILocalizationService _localizationService;
         public RejectAppointmentCommandHandler(
-            ApplicationDbContext context,
+            IApplicationDbContext context,
             ILocalizationService localizationService)
         {
             _context = context;

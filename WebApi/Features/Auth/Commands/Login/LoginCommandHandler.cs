@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
@@ -10,13 +11,13 @@ namespace WebApi.Features.Auth.Commands.Login
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly AuthService _authService;
         private readonly PasswordService _passwordService;
         private readonly ILocalizationService _localizationService;
 
         public LoginCommandHandler(
-            ApplicationDbContext context,
+            IApplicationDbContext context,
             AuthService authService,
             PasswordService passwordService,
             ILocalizationService localizationService)

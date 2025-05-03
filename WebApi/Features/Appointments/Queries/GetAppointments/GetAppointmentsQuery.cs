@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Results;
 using WebApi.Domain.Enums;
 using WebApi.DTOs;
@@ -38,8 +39,8 @@ namespace WebApi.Features.Appointments.Queries.GetAppointments
 
     public sealed class GetAppointmentsQueryHandler : IRequestHandler<GetAppointmentsQuery, Result<List<AppointmentDto>>>
     {
-        private readonly ApplicationDbContext _context;
-        public GetAppointmentsQueryHandler(ApplicationDbContext context)
+        private readonly IApplicationDbContext _context;
+        public GetAppointmentsQueryHandler(IApplicationDbContext context)
         {
             _context = context;
         }

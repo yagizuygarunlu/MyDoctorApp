@@ -20,6 +20,7 @@ using WebApi.Infrastructure.Persistence;
 using WebApi.Infrastructure.Services;
 using OpenTelemetry.Trace;
 using Microsoft.AspNetCore.RateLimiting;
+using WebApi.Application.Common.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,8 @@ builder.Services.AddOpenTelemetry()
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();

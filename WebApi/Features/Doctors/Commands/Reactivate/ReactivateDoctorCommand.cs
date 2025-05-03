@@ -3,6 +3,7 @@ using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
 using FluentValidation;
 using WebApi.Common.Localization;
+using WebApi.Application.Common.Interfaces;
 
 namespace WebApi.Features.Doctors.Commands.Reactivate
 {
@@ -22,7 +23,7 @@ namespace WebApi.Features.Doctors.Commands.Reactivate
 
     public sealed class ReactivateDoctorHandler : IRequestHandler<ReactivateDoctorCommand, Result<int>>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
 
         public ReactivateDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)

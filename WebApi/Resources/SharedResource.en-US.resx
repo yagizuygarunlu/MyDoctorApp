@@ -402,4 +402,13 @@
   <data name="Common.IdMismatch" xml:space="preserve">
     <value>Id in the URL does not match the Id in the body.</value>
   </data>
+  <data name="Appointments.DoctorUnavailable" xml:space="preserve">
+    <value>The doctor is currently unavailable.</value>
+  </data>
+  <data name="Appointments.PatientAlreadyHasAppointment" xml:space="preserve">
+    <value>The patient already has a scheduled appointment.</value>
+  </data>
+  <data name="Doctors.EmailAlreadyExists" xml:space="preserve">
+    <value>This email address is already associated with another doctor.</value>
+  </data>
 </root>

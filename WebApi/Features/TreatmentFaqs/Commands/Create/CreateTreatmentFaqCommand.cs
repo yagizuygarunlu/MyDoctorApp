@@ -4,6 +4,7 @@ using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
 using WebApi.Common.Localization;
+using WebApi.Application.Common.Interfaces;
 
 namespace WebApi.Features.TreatmentFaqs.Commands.Create
 {
@@ -33,10 +34,10 @@ namespace WebApi.Features.TreatmentFaqs.Commands.Create
 
     public class CreateTreatmentFaqCommandHandler : IRequestHandler<CreateTreatmentFaqCommand, Result<int>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly ILocalizationService _localizationService;
 
-        public CreateTreatmentFaqCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
+        public CreateTreatmentFaqCommandHandler(IApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
             _localizationService = localizationService;

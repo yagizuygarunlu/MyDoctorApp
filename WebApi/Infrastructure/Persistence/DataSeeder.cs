@@ -1,4 +1,5 @@
-﻿using WebApi.Domain.Entities;
+﻿using WebApi.Application.Common.Interfaces;
+using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Services;
 
 namespace WebApi.Infrastructure.Persistence

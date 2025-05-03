@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
@@ -10,8 +11,8 @@ namespace WebApi.Features.CarouselItems.Queries.GetActives
 
     public class GetActiveCarouselItemsQueryHandler : IRequestHandler<GetActiveCarouselItemsQuery, Result<List<CarouselItem>>>
     {
-        private readonly ApplicationDbContext _context;
-        public GetActiveCarouselItemsQueryHandler(ApplicationDbContext context)
+        private readonly IApplicationDbContext _context;
+        public GetActiveCarouselItemsQueryHandler(IApplicationDbContext context)
         {
             _context = context;
         }

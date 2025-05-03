@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Infrastructure.Persistence;
@@ -11,9 +12,9 @@ namespace WebApi.Features.CarouselItems.Commands.Reactivate
 
     public class ReactivateCarouselItemCommandHandler : IRequestHandler<ReactivateCarouselItemCommand, Result<int>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly ILocalizationService _localizationService;
-        public ReactivateCarouselItemCommandHandler(ApplicationDbContext context, ILocalizationService localizationService)
+        public ReactivateCarouselItemCommandHandler(IApplicationDbContext context, ILocalizationService localizationService)
         {
             _context = context;
             _localizationService = localizationService;

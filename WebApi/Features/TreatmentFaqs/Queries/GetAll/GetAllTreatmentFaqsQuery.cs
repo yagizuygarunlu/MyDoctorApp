@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Infrastructure.Persistence;
@@ -10,8 +11,8 @@ namespace WebApi.Features.TreatmentFaqs.Queries.GetAll
 
     public sealed class GetActiveTreatmentFaqsQueryHandler : IRequestHandler<GetAllTreatmentFaqsQuery, Result<List<TreatmentFaq>>>
     {
-        private readonly ApplicationDbContext _context;
-        public GetActiveTreatmentFaqsQueryHandler(ApplicationDbContext context)
+        private readonly IApplicationDbContext _context;
+        public GetActiveTreatmentFaqsQueryHandler(IApplicationDbContext context)
         {
             _context = context;
         }
