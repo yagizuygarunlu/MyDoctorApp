@@ -7,7 +7,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Features.Appointments.Commands.Reject
 {
     public record RejectAppointmentCommand(
-        int Id,
+        Guid Id,
         string Reason
     ) : IRequest<Result<Unit>>;
 

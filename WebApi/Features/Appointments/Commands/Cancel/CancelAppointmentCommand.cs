@@ -7,7 +7,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Features.Appointments.Commands.Cancel
 {
     public record CancelAppointmentCommand(
-        int Id
+        Guid Id
     ) : IRequest<Result<Unit>>;
 
     public sealed class CancelAppointmentCommandHandler : IRequestHandler<CancelAppointmentCommand, Result<Unit>>

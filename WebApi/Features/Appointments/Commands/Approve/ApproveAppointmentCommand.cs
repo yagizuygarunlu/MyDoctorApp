@@ -8,7 +8,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Features.Appointments.Commands.Approve
 {
     public record ApproveAppointmentCommand(
-        int AppointmentId,
+        Guid AppointmentId,
         string DoctorId) : IRequest<Result<Unit>>;
 
     public sealed class ApproveAppointmentCommandHandler : IRequestHandler<ApproveAppointmentCommand, Result<Unit>>

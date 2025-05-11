@@ -34,13 +34,13 @@ namespace WebApi.Features.Appointments
                 return Results.Ok(result);
             });
             
-            group.MapPut("/{id:int}/approve", async ([FromServices] IMediator mediator, int id, string doctorId, CancellationToken cancellationToken) =>
+            group.MapPut("/{id:int}/approve", async ([FromServices] IMediator mediator, Guid id, string doctorId, CancellationToken cancellationToken) =>
             {
                 var result = await mediator.Send(new ApproveAppointmentCommand(id, doctorId), cancellationToken);
                 return Results.Ok(result);
             });
             
-            group.MapPut("/{id:int}/cancel", async ([FromServices] IMediator mediator, int id, CancellationToken cancellationToken) =>
+            group.MapPut("/{id:int}/cancel", async ([FromServices] IMediator mediator, Guid id, CancellationToken cancellationToken) =>
             {
                 var result = await mediator.Send(new CancelAppointmentCommand(id), cancellationToken);
                 return Results.Ok(result);

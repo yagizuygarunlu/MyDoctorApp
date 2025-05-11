@@ -7,7 +7,6 @@ using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Domain.Enums;
 using WebApi.Features.Patients.Commands.Create;
-using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.Appointments.Commands.Create
 {
