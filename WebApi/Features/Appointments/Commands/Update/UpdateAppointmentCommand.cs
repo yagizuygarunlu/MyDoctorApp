@@ -8,7 +8,7 @@ using WebApi.Infrastructure.Persistence;
 namespace WebApi.Features.Appointments.Commands.Update
 {
     public record UpdateAppointmentCommand(
-        int Id,
+        Guid Id,
         int DoctorId,
         string PatientName,
         string PatientEmail,

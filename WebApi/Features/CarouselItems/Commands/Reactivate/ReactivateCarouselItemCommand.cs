@@ -2,7 +2,6 @@
 using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Common.Results;
-using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.CarouselItems.Commands.Reactivate
 {

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
-using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.CarouselItems.Queries.GetActives
 {

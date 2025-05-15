@@ -26,7 +26,7 @@ namespace WebApi.Features.Doctors.Commands.Reactivate
         private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
 
-        public ReactivateDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
+        public ReactivateDoctorHandler(IApplicationDbContext dbContext, ILocalizationService localizationService)
         {
             _dbContext = dbContext;
             _localizationService = localizationService;

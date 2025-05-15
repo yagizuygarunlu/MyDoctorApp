@@ -72,7 +72,7 @@ namespace WebApi.Features.Doctors.Commands.Update
         private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
 
-        public UpdateDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
+        public UpdateDoctorHandler(IApplicationDbContext dbContext, ILocalizationService localizationService)
         {
             _dbContext = dbContext;
             _localizationService = localizationService;

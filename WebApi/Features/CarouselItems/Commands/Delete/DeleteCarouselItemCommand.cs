@@ -2,7 +2,6 @@
 using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Common.Results;
-using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Features.CarouselItems.Commands.Delete
 {
@@ -27,7 +26,7 @@ namespace WebApi.Features.CarouselItems.Commands.Delete
 
             carouselItem.IsActive = false;
             await _context.SaveChangesAsync(cancellationToken);
-            return Result<Unit>.Success(Unit.Value,_localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.Deleted)); // Explicitly pass Unit.Value to match the expected type
+            return Result<Unit>.Success(Unit.Value,_localizationService.GetLocalizedString(LocalizationKeys.CarouselItems.Deleted));
         }
     }
 }

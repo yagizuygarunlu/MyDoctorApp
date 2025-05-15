@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using WebApi.Application.Common.Interfaces;
+using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
 using WebApi.Domain.ValueObjects;
-using WebApi.Infrastructure.Persistence;
-using WebApi.Common.Localization;
-using Microsoft.EntityFrameworkCore;
-using WebApi.Application.Common.Interfaces;
 
 namespace WebApi.Features.Doctors.Commands.Create
 {
@@ -59,7 +58,7 @@ namespace WebApi.Features.Doctors.Commands.Create
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
-        public CreateDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
+        public CreateDoctorHandler(IApplicationDbContext dbContext, ILocalizationService localizationService)
         {
             _dbContext = dbContext;
             _localizationService = localizationService;

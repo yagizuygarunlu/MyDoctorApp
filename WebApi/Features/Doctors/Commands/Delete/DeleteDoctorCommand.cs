@@ -26,7 +26,7 @@ namespace WebApi.Features.Doctors.Commands.Delete
         private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
 
-        public DeleteDoctorHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
+        public DeleteDoctorHandler(IApplicationDbContext dbContext, ILocalizationService localizationService)
         {
             _dbContext = dbContext;
             _localizationService = localizationService;
