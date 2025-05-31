@@ -45,7 +45,7 @@ namespace WebApi.Features.Reviews.Commands
         private readonly IApplicationDbContext _dbContext;
         private readonly ILocalizationService _localizationService;
 
-        public CreateReviewHandler(ApplicationDbContext dbContext, ILocalizationService localizationService)
+        public CreateReviewHandler(IApplicationDbContext dbContext, ILocalizationService localizationService)
         {
             _dbContext = dbContext;
             _localizationService = localizationService;

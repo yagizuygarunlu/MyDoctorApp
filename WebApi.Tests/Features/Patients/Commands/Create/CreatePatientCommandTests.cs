@@ -87,7 +87,12 @@ namespace WebApi.Tests.Features.Patients.Commands.Create
             _patients = new List<Patient>();
 
             var patientsDbSet = Substitute.For<DbSet<Patient>, IQueryable<Patient>>();
-            patientsDbSet.Add(Arg.Do<Patient>(p => _patients.Add(p)));
+            
+            // Fix: Create the patient with a non-empty GUID when added
+            patientsDbSet.Add(Arg.Do<Patient>(p => {
+                p.Id = Guid.NewGuid(); // Generate a non-empty GUID
+                _patients.Add(p);
+            }));
 
             _context.Patients.Returns(patientsDbSet);
             _context.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);

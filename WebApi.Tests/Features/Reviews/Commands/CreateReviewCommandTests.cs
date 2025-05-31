@@ -6,7 +6,6 @@ using WebApi.Application.Common.Interfaces;
 using WebApi.Common.Localization;
 using WebApi.Domain.Entities;
 using WebApi.Features.Reviews.Commands;
-using WebApi.Infrastructure.Persistence;
 
 namespace WebApi.Tests.Features.Reviews.Commands
 {
@@ -111,8 +110,8 @@ namespace WebApi.Tests.Features.Reviews.Commands
             _localizationService.GetLocalizedString(Arg.Any<string>())
                 .Returns(callInfo => callInfo.Arg<string>());
 
-            // Use ApplicationDbContext for constructor, but substitute for interface
-            _handler = new CreateReviewHandler((ApplicationDbContext)_dbContext, _localizationService);
+            // Now we can directly use IApplicationDbContext
+            _handler = new CreateReviewHandler(_dbContext, _localizationService);
         }
 
         [Fact]

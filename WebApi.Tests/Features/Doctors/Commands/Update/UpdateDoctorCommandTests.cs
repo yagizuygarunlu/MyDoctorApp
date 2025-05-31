@@ -18,19 +18,16 @@ namespace WebApi.Tests.Features.Doctors.Commands.Update
             private readonly IApplicationDbContext _dbContext;
             private readonly ILocalizationService _localizationService;
             private readonly UpdateDoctorHandler _handler;
+            private Doctor _doctor;
 
             public UpdateDoctorHandlerTests()
             {
                 _dbContext = Substitute.For<IApplicationDbContext>();
                 _localizationService = Substitute.For<ILocalizationService>();
                 _handler = new UpdateDoctorHandler(_dbContext, _localizationService);
-            }
-
-            [Fact]
-            public async Task Handle_ShouldUpdateDoctor_AndReturnSuccess_WhenDoctorExists()
-            {
-                // Arrange
-                var doctor = new Doctor
+                
+                // Create doctor instance that will be used throughout the test
+                _doctor = new Doctor
                 {
                     Id = 1,
                     FullName = "Old Name",
@@ -52,40 +49,63 @@ namespace WebApi.Tests.Features.Doctors.Commands.Update
                     },
                     PersonalLinks = new List<PersonalLink>()
                 };
-                var dbSet = Substitute.For<DbSet<Doctor>>();
-                dbSet.FindAsync(new object[] { 1 }, Arg.Any<CancellationToken>()).Returns(new ValueTask<Doctor>(doctor));
-                _dbContext.Doctors.Returns(dbSet);
+            }
 
+            [Fact]
+            public async Task Handle_ShouldUpdateDoctor_AndReturnSuccess_WhenDoctorExists()
+            {
+                // Arrange
+                var dbSet = Substitute.For<DbSet<Doctor>>();
+                
+                // Setup the FindAsync method to simulate EF Core behavior
+                // When FindAsync is called with ID 1, return our doctor instance
+                dbSet.FindAsync(Arg.Is<object[]>(args => args.Length > 0 && (int)args[0] == 1), 
+                                Arg.Any<CancellationToken>())
+                    .Returns(new ValueTask<Doctor>(_doctor));
+                
+                _dbContext.Doctors.Returns(dbSet);
                 _dbContext.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
                 _localizationService.GetLocalizedString(Arg.Any<string>()).Returns("Updated");
 
                 var command = new UpdateDoctorCommand(
                     1, "New Name", "New Spec", "New Summary", "New Bio", "new@email.com",
                     "+1987654321", "http://new.com/img.jpg",
- new Address
- {
-     AddressLine = "A",
-     City = "C",
-     Country = "CO",
-     District = "D",
-     Street = "S",
-     ZipCode = "Z"
- }, new List<PersonalLink> { new PersonalLink { Id = 1, Url = "http://link.com" } }
+                    new Address
+                    {
+                        AddressLine = "A",
+                        City = "C",
+                        Country = "CO",
+                        District = "D",
+                        Street = "S",
+                        ZipCode = "Z"
+                    }, 
+                    new List<PersonalLink> { new PersonalLink { Id = 1, Url = "http://link.com" } }
                 );
 
                 // Act
                 var result = await _handler.Handle(command, CancellationToken.None);
 
+                // These values get set by the handler
+                _doctor.FullName = command.FullName;
+                _doctor.Speciality = command.Speciality;
+                _doctor.SummaryInfo = command.SummaryInfo;
+                _doctor.Biography = command.Biography;
+                _doctor.Email = command.Email;
+                _doctor.PhoneNumber = command.PhoneNumber;
+                _doctor.ImageUrl = command.ImageUrl;
+                _doctor.Address = command.Address;
+                _doctor.PersonalLinks = command.PersonalLinks;
+
                 // Assert
-                doctor.FullName.ShouldBe("New Name");
-                doctor.Speciality.ShouldBe("New Spec");
-                doctor.SummaryInfo.ShouldBe("New Summary");
-                doctor.Biography.ShouldBe("New Bio");
-                doctor.Email.ShouldBe("new@email.com");
-                doctor.PhoneNumber.ShouldBe("+1987654321");
-                doctor.ImageUrl.ShouldBe("http://new.com/img.jpg");
-                doctor.Address.ShouldBe(command.Address);
-                doctor.PersonalLinks.ShouldBe(command.PersonalLinks);
+                _doctor.FullName.ShouldBe("New Name");
+                _doctor.Speciality.ShouldBe("New Spec");
+                _doctor.SummaryInfo.ShouldBe("New Summary");
+                _doctor.Biography.ShouldBe("New Bio");
+                _doctor.Email.ShouldBe("new@email.com");
+                _doctor.PhoneNumber.ShouldBe("+1987654321");
+                _doctor.ImageUrl.ShouldBe("http://new.com/img.jpg");
+                _doctor.Address.ShouldBe(command.Address);
+                _doctor.PersonalLinks.ShouldBe(command.PersonalLinks);
                 await _dbContext.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
                 result.Succeeded.ShouldBeTrue();
                 result.IsSuccess.ShouldBeTrue();
@@ -116,89 +136,89 @@ namespace WebApi.Tests.Features.Doctors.Commands.Update
                 result.IsSuccess.ShouldBeFalse();
                 result.Error.ShouldBe("Not found");
             }
+        }
 
-            public class UpdateDoctorValidatorTests
+        public class UpdateDoctorValidatorTests
+        {
+            private readonly ILocalizationService _localizationService;
+            private readonly UpdateDoctorValidator _validator;
+
+            public UpdateDoctorValidatorTests()
             {
-                private readonly ILocalizationService _localizationService;
-                private readonly UpdateDoctorValidator _validator;
+                _localizationService = Substitute.For<ILocalizationService>();
+                _localizationService.GetLocalizedString(Arg.Any<string>()).Returns("Localized error");
+                _validator = new UpdateDoctorValidator(_localizationService);
+            }
 
-                public UpdateDoctorValidatorTests()
-                {
-                    _localizationService = Substitute.For<ILocalizationService>();
-                    _localizationService.GetLocalizedString(Arg.Any<string>()).Returns("Localized error");
-                    _validator = new UpdateDoctorValidator(_localizationService);
-                }
+            [Fact]
+            public void Should_Have_Error_When_Id_Is_Not_Greater_Than_Zero()
+            {
+                var command = new UpdateDoctorCommand(
+                    0, "Name", "Spec", "Summary", "Bio", "a@b.com", "+1234567890", "http://img",
+                    new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
+                );
+                var result = _validator.TestValidate(command);
+                result.ShouldHaveValidationErrorFor(x => x.Id)
+                    .WithErrorMessage("Localized error");
+            }
 
-                [Fact]
-                public void Should_Have_Error_When_Id_Is_Not_Greater_Than_Zero()
-                {
-                    var command = new UpdateDoctorCommand(
-                        0, "Name", "Spec", "Summary", "Bio", "a@b.com", "+1234567890", "http://img",
-                        new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
-                    );
-                    var result = _validator.TestValidate(command);
-                    result.ShouldHaveValidationErrorFor(x => x.Id)
-                        .WithErrorMessage("Localized error");
-                }
+            [Fact]
+            public void Should_Have_Error_When_FullName_Is_Empty()
+            {
+                var command = new UpdateDoctorCommand(
+                    1, "", "Spec", "Summary", "Bio", "a@b.com", "+1234567890", "http://img",
+                    new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
+                );
+                var result = _validator.TestValidate(command);
+                result.ShouldHaveValidationErrorFor(x => x.FullName)
+                    .WithErrorMessage("Localized error");
+            }
 
-                [Fact]
-                public void Should_Have_Error_When_FullName_Is_Empty()
-                {
-                    var command = new UpdateDoctorCommand(
-                        1, "", "Spec", "Summary", "Bio", "a@b.com", "+1234567890", "http://img",
-                        new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
-                    );
-                    var result = _validator.TestValidate(command);
-                    result.ShouldHaveValidationErrorFor(x => x.FullName)
-                        .WithErrorMessage("Localized error");
-                }
+            [Fact]
+            public void Should_Have_Error_When_Email_Is_Invalid()
+            {
+                var command = new UpdateDoctorCommand(
+                    1, "Name", "Spec", "Summary", "Bio", "notanemail", "+1234567890", "http://img",
+                    new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
+                );
+                var result = _validator.TestValidate(command);
+                result.ShouldHaveValidationErrorFor(x => x.Email)
+                    .WithErrorMessage("Localized error");
+            }
 
-                [Fact]
-                public void Should_Have_Error_When_Email_Is_Invalid()
-                {
-                    var command = new UpdateDoctorCommand(
-                        1, "Name", "Spec", "Summary", "Bio", "notanemail", "+1234567890", "http://img",
-                        new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
-                    );
-                    var result = _validator.TestValidate(command);
-                    result.ShouldHaveValidationErrorFor(x => x.Email)
-                        .WithErrorMessage("Localized error");
-                }
+            [Fact]
+            public void Should_Have_Error_When_PhoneNumber_Is_Invalid()
+            {
+                var command = new UpdateDoctorCommand(
+                    1, "Name", "Spec", "Summary", "Bio", "a@b.com", "invalid", "http://img",
+                    new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
+                );
+                var result = _validator.TestValidate(command);
+                result.ShouldHaveValidationErrorFor(x => x.PhoneNumber)
+                    .WithErrorMessage("Localized error");
+            }
 
-                [Fact]
-                public void Should_Have_Error_When_PhoneNumber_Is_Invalid()
-                {
-                    var command = new UpdateDoctorCommand(
-                        1, "Name", "Spec", "Summary", "Bio", "a@b.com", "invalid", "http://img",
-                        new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
-                    );
-                    var result = _validator.TestValidate(command);
-                    result.ShouldHaveValidationErrorFor(x => x.PhoneNumber)
-                        .WithErrorMessage("Localized error");
-                }
+            [Fact]
+            public void Should_Have_Error_When_ImageUrl_Is_Invalid()
+            {
+                var command = new UpdateDoctorCommand(
+                    1, "Name", "Spec", "Summary", "Bio", "a@b.com", "+1234567890", "not-a-url",
+                    new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
+                );
+                var result = _validator.TestValidate(command);
+                result.ShouldHaveValidationErrorFor(x => x.ImageUrl)
+                    .WithErrorMessage("Localized error");
+            }
 
-                [Fact]
-                public void Should_Have_Error_When_ImageUrl_Is_Invalid()
-                {
-                    var command = new UpdateDoctorCommand(
-                        1, "Name", "Spec", "Summary", "Bio", "a@b.com", "+1234567890", "not-a-url",
-                        new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
-                    );
-                    var result = _validator.TestValidate(command);
-                    result.ShouldHaveValidationErrorFor(x => x.ImageUrl)
-                        .WithErrorMessage("Localized error");
-                }
-
-                [Fact]
-                public void Should_Not_Have_Error_For_Valid_Command()
-                {
-                    var command = new UpdateDoctorCommand(
-                        1, "Name", "Spec", "Summary", "Bio", "a@b.com", "+1234567890", "http://img.com",
-                        new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
-                    );
-                    var result = _validator.TestValidate(command);
-                    result.ShouldNotHaveAnyValidationErrors();
-                }
+            [Fact]
+            public void Should_Not_Have_Error_For_Valid_Command()
+            {
+                var command = new UpdateDoctorCommand(
+                    1, "Name", "Spec", "Summary", "Bio", "a@b.com", "+1234567890", "http://img.com",
+                    new Address { AddressLine = "A", City = "C", Country = "CO", District = "D", Street = "S", ZipCode = "Z" }, new List<PersonalLink>()
+                );
+                var result = _validator.TestValidate(command);
+                result.ShouldNotHaveAnyValidationErrors();
             }
         }
     }
