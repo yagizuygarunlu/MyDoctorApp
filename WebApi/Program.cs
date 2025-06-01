@@ -21,6 +21,7 @@ using WebApi.Infrastructure.Services;
 using OpenTelemetry.Trace;
 using Microsoft.AspNetCore.RateLimiting;
 using WebApi.Application.Common.Interfaces;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -117,6 +118,14 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+// Add health checks
+builder.Services.AddHealthChecks()
+    .AddNpgsql(
+        connectionString: builder.Configuration.GetConnectionString("DefaultConnection")!,
+        name: "postgres-db",
+        timeout: TimeSpan.FromSeconds(30))
+    .AddCheck("self", () => HealthChecks.Extensions.DependencyInjection.HealthCheckResult.Healthy());
+
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
     app.UseCors("AllowAllOrigins");
@@ -135,6 +144,29 @@ app.MapDoctorEndpoints();
 app.MapReviewEndpoints();
 app.MapTreatmentEndpoints();
 app.MapTreatmentFaqEndpoints();
+
+// Add health check endpoint
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        var response = new
+        {
+            status = report.Status.ToString(),
+            checks = report.Entries.Select(entry => new
+            {
+                name = entry.Key,
+                status = entry.Value.Status.ToString(),
+                exception = entry.Value.Exception?.Message,
+                duration = entry.Value.Duration.ToString()
+            }),
+            duration = report.TotalDuration.ToString()
+        };
+        await context.Response.WriteAsJsonAsync(response);
+    }
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

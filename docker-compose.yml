@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  mydoctorapp-api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: mydoctorapp-api
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080;https://+:8081
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=MyDoctorDb;Username=postgres;Password=MySecurePassword123!
+      - Jwt__Key=YourSuperSecretKeyForJWTTokenGenerationMustBe32CharsLong!
+      - Jwt__Issuer=MyDoctorApp
+      - Jwt__Audience=MyDoctorAppUsers
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - mydoctorapp-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: mydoctorapp-postgres
+    environment:
+      POSTGRES_DB: MyDoctorDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: MySecurePassword123!
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - mydoctorapp-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d MyDoctorDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Optional: pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: mydoctorapp-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mydoctorapp.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - mydoctorapp-network
+    restart: unless-stopped
+    profiles:
+      - tools
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  mydoctorapp-network:
+    driver: bridge 

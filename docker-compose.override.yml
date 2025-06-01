@@ -1,0 +1,39 @@
+version: '3.8'
+
+# Development overrides
+services:
+  mydoctorapp-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=MyDoctorDb_Dev;Username=postgres;Password=DevPassword123!
+      - Jwt__Key=DevSecretKeyForJWTTokenGenerationMustBe32CharsLong!
+    volumes:
+      # Mount source code for hot reload during development
+      - ./WebApi:/app/source:ro
+      - ./WebApi/Logs:/app/Logs
+    ports:
+      - "5000:8080"  # Different port for dev
+    develop:
+      watch:
+        - action: rebuild
+          path: ./WebApi
+          target: /app
+          ignore:
+            - bin/
+            - obj/
+            - Logs/
+
+  postgres:
+    environment:
+      POSTGRES_DB: MyDoctorDb_Dev
+      POSTGRES_PASSWORD: DevPassword123!
+    ports:
+      - "5433:5432"  # Different port to avoid conflicts with local PostgreSQL
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_dev_data:
+    driver: local 
