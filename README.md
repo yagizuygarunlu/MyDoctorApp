@@ -39,8 +39,6 @@ A comprehensive medical practice management system built with .NET 8, featuring 
 3. Run database migrations
 4. Start the application
 
-[Detailed setup instructions...]
-
 ## 📊 API Documentation
 The API includes comprehensive endpoints for:
 - Authentication & Authorization
