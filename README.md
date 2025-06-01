@@ -6,9 +6,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
 
 ## 📖 Overview
-A comprehensive medical practice management system built with .NET 9, featuring appointment scheduling, patient management, doctor profiles, and treatment catalogs. Designed with Clean Architecture and CQRS patterns, demonstrating modern development practices and enterprise-grade solutions.
+A comprehensive medical practice management system built with .NET 9, featuring appointment scheduling, patient management, doctor profiles, and treatment catalogs. Designed with **Vertical Slice Architecture** and CQRS patterns, demonstrating modern development practices and enterprise-grade solutions.
 
-> **Note**: This is a portfolio project showcasing modern .NET development, clean architecture, and DevOps practices. Not intended for actual medical use without proper compliance certifications.
+> **Note**: This is a portfolio project showcasing modern .NET development, vertical slice architecture, and DevOps practices. Not intended for actual medical use without proper compliance certifications.
 
 ## ✨ Features
 - 👨‍⚕️ **Doctor Management** - Comprehensive doctor profiles with specializations and personal links
@@ -25,13 +25,51 @@ A comprehensive medical practice management system built with .NET 9, featuring 
 ## 🛠️ Tech Stack
 - **Backend**: .NET 9, ASP.NET Core Web API
 - **Database**: PostgreSQL 16+ with Entity Framework Core
-- **Architecture**: Clean Architecture, Vertical Slice Architecture, CQRS with MediatR
+- **Architecture**: **Vertical Slice Architecture** with CQRS pattern
+- **Messaging**: MediatR for request/response handling
 - **Authentication**: JWT Bearer Tokens
 - **Validation**: FluentValidation with localized error messages
 - **Logging**: Serilog with structured logging and file/console outputs
 - **Testing**: xUnit, FluentAssertions, NSubstitute
 - **Containerization**: Docker & Docker Compose
 - **Monitoring**: Health checks with database connectivity verification
+
+## 🏗️ Architecture Overview
+
+### Vertical Slice Architecture
+This project implements **Vertical Slice Architecture**, organizing code by **features** rather than technical layers. Each feature contains all the necessary code to handle its specific business functionality.
+
+#### Benefits:
+- **Feature-Focused Organization**: Related code stays together
+- **Reduced Coupling**: Features are self-contained and independent
+- **Easy Navigation**: Find all appointment logic in the Appointments folder
+- **Simplified Testing**: Each feature can be tested in isolation
+- **Team Scalability**: Different teams can work on different features independently
+
+#### Feature Structure:
+```
+Features/
+├── Appointments/           # Complete appointment management
+│   ├── Commands/          # State-changing operations
+│   │   ├── Create/        # Create appointment + validation + handler
+│   │   ├── Approve/       # Approve appointment logic
+│   │   ├── Cancel/        # Cancellation workflow
+│   │   └── Reject/        # Rejection with reason
+│   ├── Queries/           # Data retrieval operations
+│   │   ├── GetAppointments/   # List appointments with filtering
+│   │   └── GetTodays/         # Today's appointments
+│   └── AppointmentEndpoints.cs # API endpoints for this feature
+├── Doctors/               # Doctor management feature slice
+├── Patients/              # Patient management feature slice
+└── Treatments/            # Treatment catalog feature slice
+```
+
+### CQRS Pattern Integration
+Combined with **Command Query Responsibility Segregation (CQRS)**:
+- **Commands**: Handle business operations (Create, Update, Delete)
+- **Queries**: Handle data retrieval optimized for specific use cases
+- **Handlers**: Contain business logic for each operation
+- **Validators**: FluentValidation for each command/query
 
 ## 🚀 Getting Started
 
@@ -50,7 +88,7 @@ git clone https://github.com/yourusername/MyDoctorApp.git
 cd MyDoctorApp
 
 # Copy environment template and customize if needed
-cp .env.example .env
+cp env.example .env
 
 # Start with Docker Compose
 docker-compose up -d
@@ -130,32 +168,76 @@ curl -H "Authorization: Bearer your_jwt_token" http://localhost:8080/api/doctors
 ```
 
 ## 📁 Project Structure
+
+### Vertical Slice Organization
 ```
 MyDoctorApp/
-├── WebApi/                      # Main API project
-│   ├── Features/               # Feature-based organization (Vertical Slice)
-│   │   ├── Appointments/       # Appointment management
-│   │   ├── Doctors/           # Doctor management  
-│   │   ├── Patients/          # Patient management
-│   │   ├── Treatments/        # Treatment catalog
-│   │   ├── Reviews/           # Review system
-│   │   └── Auth/              # Authentication
-│   ├── Domain/                # Domain entities and business logic
-│   │   ├── Entities/          # Core business entities
-│   │   ├── Enums/             # Domain enumerations
-│   │   └── ValueObjects/      # Domain value objects
-│   ├── Infrastructure/        # Data access and external services
-│   │   ├── Persistence/       # Entity Framework configuration
-│   │   └── Services/          # External service implementations
-│   ├── Common/                # Shared utilities and extensions
-│   │   ├── Localization/      # Multi-language support
-│   │   ├── Results/           # Result pattern implementation
-│   │   └── Extensions/        # Extension methods
-│   └── Migrations/            # EF Core database migrations
-├── WebApi.Tests/              # Unit and integration tests
-├── docker-compose.yml         # Docker configuration
-├── Dockerfile                 # Container definition
-└── DOCKER_SETUP.md           # Docker documentation
+├── WebApi/                          # Main API project
+│   ├── Features/                   # 🎯 FEATURE-BASED ORGANIZATION
+│   │   ├── Appointments/           # Complete appointment management slice
+│   │   │   ├── Commands/          # Business operations
+│   │   │   │   ├── Create/        # CreateAppointmentCommand + Handler + Validator
+│   │   │   │   ├── Approve/       # ApproveAppointmentCommand + Handler
+│   │   │   │   ├── Cancel/        # CancelAppointmentCommand + Handler
+│   │   │   │   └── Reject/        # RejectAppointmentCommand + Handler
+│   │   │   ├── Queries/           # Data retrieval operations
+│   │   │   │   ├── GetAppointments/   # GetAppointmentsQuery + Handler
+│   │   │   │   └── GetTodays/         # GetTodaysAppointmentsQuery + Handler
+│   │   │   └── AppointmentEndpoints.cs # API endpoint definitions
+│   │   ├── Doctors/               # Doctor management feature slice
+│   │   │   ├── Commands/          # Create, Update, Delete, Reactivate
+│   │   │   ├── Queries/           # Doctor-specific queries
+│   │   │   └── DoctorEndpoints.cs # Doctor API endpoints
+│   │   ├── Patients/              # Patient management feature slice
+│   │   ├── Treatments/            # Treatment catalog feature slice
+│   │   ├── Reviews/               # Review system feature slice
+│   │   ├── Auth/                  # Authentication feature slice
+│   │   └── TreatmentFaqs/         # Treatment FAQ management
+│   ├── Domain/                    # Domain entities and business models
+│   │   ├── Entities/              # Core business entities
+│   │   ├── Enums/                 # Domain enumerations
+│   │   └── ValueObjects/          # Domain value objects
+│   ├── Infrastructure/            # Data access and external services
+│   │   ├── Persistence/           # Entity Framework configuration
+│   │   └── Services/              # External service implementations
+│   ├── Common/                    # Shared utilities and cross-cutting concerns
+│   │   ├── Localization/          # Multi-language support
+│   │   ├── Results/               # Result pattern implementation
+│   │   └── Extensions/            # Extension methods
+│   └── Migrations/                # EF Core database migrations
+├── WebApi.Tests/                  # Unit and integration tests
+├── docker-compose.yml             # Docker configuration
+├── Dockerfile                     # Container definition
+└── DOCKER_SETUP.md               # Docker documentation
+```
+
+### Key Architectural Principles
+
+#### 1. **Feature Cohesion**
+Each feature folder contains everything needed for that business capability:
+- Commands (business operations)
+- Queries (data retrieval)
+- Validators (input validation)
+- Handlers (business logic)
+- Endpoints (API surface)
+
+#### 2. **Independence**
+Features are designed to be independent of each other, reducing coupling and enabling:
+- Independent deployment (if needed)
+- Team autonomy
+- Easier testing and maintenance
+
+#### 3. **Consistent Patterns**
+Each feature follows the same organizational pattern:
+```
+FeatureName/
+├── Commands/
+│   └── OperationName/
+│       └── OperationNameCommand.cs     # Command + Handler + Validator
+├── Queries/
+│   └── QueryName/
+│       └── QueryNameQuery.cs           # Query + Handler + Response
+└── FeatureNameEndpoints.cs             # API endpoints
 ```
 
 ## 🧪 Testing
@@ -215,21 +297,23 @@ ASPNETCORE_ENVIRONMENT="Production"
 
 ## 📋 Architecture Highlights
 
-### Clean Architecture Benefits:
-- **Separation of Concerns**: Clear boundaries between layers
-- **Dependency Inversion**: Dependencies point inward toward business logic
-- **Testability**: Easy to unit test business logic in isolation
-- **Maintainability**: Changes in one layer don't affect others
+### Vertical Slice Architecture Benefits:
+- **Feature-Centric Organization**: All related code for a business feature is co-located
+- **Reduced Coupling**: Features are independent and self-contained
+- **Improved Maintainability**: Changes to one feature don't affect others
+- **Team Scalability**: Multiple teams can work on different features simultaneously
+- **Easier Onboarding**: New developers can understand one feature at a time
 
 ### CQRS Implementation:
 - **Commands**: Handle state-changing operations (Create, Update, Delete)
 - **Queries**: Handle read operations with optimized data transfer
-- **MediatR**: Decoupled request/response handling
-- **Validation**: FluentValidation for robust input validation
+- **MediatR**: Decoupled request/response handling across feature slices
+- **Validation**: FluentValidation for robust input validation per operation
 
 ### Design Patterns Used:
+- ✅ **Vertical Slice Architecture**: Feature-based organization
+- ✅ **CQRS Pattern**: Command/Query separation
 - ✅ **Repository Pattern**: Data access abstraction
-- ✅ **Unit of Work**: Transaction management
 - ✅ **Result Pattern**: Consistent error handling
 - ✅ **Options Pattern**: Configuration management
 - ✅ **Dependency Injection**: Loose coupling
@@ -250,9 +334,9 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 ## 🙏 Acknowledgments
 
-- Built with ❤️ using .NET 9 and modern development practices
+- Built with ❤️ using .NET 9 and Vertical Slice Architecture
 - Inspired by real-world medical practice management needs
-- Designed to showcase enterprise-level software architecture
+- Designed to showcase modern enterprise-level software architecture patterns
 
 ---
 **⭐ If you find this project helpful, please give it a star!**
