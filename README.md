@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
 
 ## 📖 Overview
-A comprehensive medical practice management system built with .NET 8, featuring appointment scheduling, patient management, doctor profiles, and treatment catalogs. Designed with Clean Architecture principles and modern development practices.
+A comprehensive medical practice management system built with .NET 9, featuring appointment scheduling, patient management, doctor profiles, and treatment catalogs. Designed with Vertical Slice Architecture CQRS pattern principles and modern development practices.
 
 ## ✨ Features
 - 👨‍⚕️ **Doctor Management** - Comprehensive doctor profiles with specializations
@@ -18,7 +18,7 @@ A comprehensive medical practice management system built with .NET 8, featuring 
 - 📊 **Structured Logging** - Comprehensive audit trails
 
 ## 🛠️ Tech Stack
-- **Backend**: .NET 8, ASP.NET Core Web API
+- **Backend**: .NET 9, ASP.NET Core Web API
 - **Database**: PostgreSQL with Entity Framework Core
 - **Architecture**: Clean Architecture, CQRS with MediatR
 - **Authentication**: JWT Bearer Tokens
@@ -29,7 +29,7 @@ A comprehensive medical practice management system built with .NET 8, featuring 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- .NET 8 SDK
+- .NET 9 SDK
 - PostgreSQL 13+
 - Visual Studio 2022 or VS Code
 
