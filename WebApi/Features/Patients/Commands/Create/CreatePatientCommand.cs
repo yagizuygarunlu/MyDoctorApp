@@ -26,12 +26,14 @@ namespace WebApi.Features.Patients.Commands.Create
                 .NotEmpty()
                 .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.EmailRequired))
                 .EmailAddress()
+                .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidEmail))
+                .Matches(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
                 .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidEmail));
 
             RuleFor(x => x.Phone)
                 .NotEmpty()
                 .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.PhoneRequired))
-                .Matches(@"^\+?[1-9]\d{1,14}$")
+                .Matches(@"^\+?[1-9]\d{9,14}$")
                 .WithMessage(localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidPhone));
         }
     }

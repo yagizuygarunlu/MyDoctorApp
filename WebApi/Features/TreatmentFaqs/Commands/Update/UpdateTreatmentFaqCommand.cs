@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
-using WebApi.Common.Results;
-using WebApi.Infrastructure.Persistence;
-using WebApi.Common.Localization;
 using WebApi.Application.Common.Interfaces;
+using WebApi.Common.Localization;
+using WebApi.Common.Results;
 
 namespace WebApi.Features.TreatmentFaqs.Commands.Update
 {

@@ -26,7 +26,9 @@
 
   <ItemGroup>
     <Folder Include="Features\Doctors\Queries\" />
-    <Folder Include="Features\TreatmentFaqs\Queries\" />
+    <Folder Include="Features\TreatmentFaqs\Commands\Update\" />
+    <Folder Include="Features\TreatmentFaqs\Queries\GetAll\" />
+    <Folder Include="Features\Treatments\Queries\" />
   </ItemGroup>
 
 </Project>

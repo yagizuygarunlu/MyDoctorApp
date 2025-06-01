@@ -1,10 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
+using WebApi.Application.Common.Interfaces;
+using WebApi.Common.Localization;
 using WebApi.Common.Results;
 using WebApi.Domain.Entities;
-using WebApi.Infrastructure.Persistence;
-using WebApi.Common.Localization;
-using WebApi.Application.Common.Interfaces;
 
 namespace WebApi.Features.Treatments.Commands.Create
 {

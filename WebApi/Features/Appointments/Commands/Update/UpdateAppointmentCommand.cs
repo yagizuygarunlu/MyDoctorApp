@@ -33,11 +33,13 @@ namespace WebApi.Features.Appointments.Commands.Update
                 .NotEmpty()
                 .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.EmailRequired))
                 .EmailAddress()
+                .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidEmail))
+                .Matches(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
                 .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidEmail));
             RuleFor(x => x.PatientPhone)
                 .NotEmpty()
                 .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.PhoneRequired))
-                .Matches(@"^\+?[1-9]\d{1,14}$")
+                .Matches(@"^\+?[1-9]\d{9,14}$")
                 .WithMessage(_localizationService.GetLocalizedString(LocalizationKeys.Patients.InvalidPhone));
             RuleFor(x => x.AppointmentDate)
                 .NotEmpty()
