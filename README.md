@@ -104,6 +104,8 @@ docker-compose logs -f
 
 For detailed Docker instructions, see [DOCKER_SETUP.md](DOCKER_SETUP.md).
 
+> 📋 **Want to see the API in action?** Check out our [Live API Demo](API-DEMO.md) with ready-to-run examples!
+
 ### 💻 Option 2: Local Development Setup
 
 1. **Clone the repository**
@@ -340,3 +342,24 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 ---
 **⭐ If you find this project helpful, please give it a star!**
+
+## 🌟 **Found This Useful?**
+
+If this project helped you learn about Vertical Slice Architecture, modern .NET development, or healthcare software design, please consider:
+
+- ⭐ **Starring this repository** - it really helps!
+- 🍴 **Forking it** to build your own medical practice system
+- 💬 **Opening an issue** with feedback or questions
+- 🚀 **Contributing** to make it even better
+- 📢 **Sharing it** with other developers who might find it useful
+
+**Your support helps me create more high-quality open-source projects!**
+
+---
+
+### 🤝 Connect & Follow
+- **LinkedIn**: [Connect with me](https://linkedin.com/in/yourprofile) for updates
+- **Twitter**: [@yourusername](https://twitter.com/yourusername) - Follow for dev tips
+- **Portfolio**: [yourwebsite.com](https://yourwebsite.com) - Check out my other projects
+
+*Building the future of healthcare software, one commit at a time.* 💻🏥
